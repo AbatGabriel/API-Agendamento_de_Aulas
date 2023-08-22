@@ -1,7 +1,8 @@
-require("dotenv");
+import "dotenv/config";
 require("express-async-errors");
 
 import express, { Request, Response } from "express";
+import { connectToDB } from "./db/connect";
 
 const app = express();
 
@@ -11,4 +12,19 @@ app.get("/", (req: Request, res: Response) => {
 
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => console.log(`Server is listening to port ${port}`));
+// Starts application connecting it to Database
+const start = async function () {
+  try {
+    if (process.env.MONGO_URI) {
+      await connectToDB(process.env.MONGO_URI);
+    } else {
+      throw new Error("Invalid URI");
+    }
+
+    app.listen(port, () => console.log(`Server is listening to port ${port}`));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+start();
