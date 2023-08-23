@@ -16,4 +16,7 @@ const InstrutorSchema: Schema = new Schema({
   horariosDisponiveis: { type: [String], required: true },
 });
 
-export default mongoose.model<IInstrutor>("Instrutor", InstrutorSchema);
+export const InstrutorModel = mongoose.model<IInstrutor>(
+  "Instrutor",
+  InstrutorSchema
+);

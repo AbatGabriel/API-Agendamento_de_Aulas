@@ -5,6 +5,13 @@ import express, { Request, Response } from "express";
 import { connectToDB } from "./db/connect";
 
 const app = express();
+app.use(express.json());
+
+//routers
+import instructorRouter from "./routes/instructor";
+
+//routes
+app.use("/", instructorRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).send("running...");
