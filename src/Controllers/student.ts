@@ -9,7 +9,7 @@ export const getAllStudents = async (req: Request, res: Response) => {
 
 export const createStudent = async (req: Request, res: Response) => {
   const Student = await StudentModel.create(req.body);
-  res.status(StatusCodes.CREATED).json(req.body);
+  res.status(StatusCodes.CREATED).json({ Student });
 };
 
 export const updateStudent = async (
