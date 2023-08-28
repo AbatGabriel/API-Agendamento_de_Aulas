@@ -6,14 +6,24 @@ import {
   createStudent,
   updateStudent,
   deleteStudent,
-} from "../Controllers/student";
+} from "../controllers/student";
+import { authMiddleware, verifyRoles } from "../middleware/auth";
+import { loginStudent } from "../controllers/main";
 
-router.route("/students").get(getAllStudents);
+router
+  .route("/students")
+  .get(authMiddleware, verifyRoles("Student"), getAllStudents);
 
 router.route("/student").post(createStudent);
 
-router.route("/student/:id").put(updateStudent);
+router.route("/student/login").post(loginStudent);
 
-router.route("/student/:id").delete(deleteStudent);
+router
+  .route("/student/:id")
+  .put(authMiddleware, verifyRoles("Student"), updateStudent);
+
+router
+  .route("/student/:id")
+  .delete(authMiddleware, verifyRoles("Student"), deleteStudent);
 
 export default router;
