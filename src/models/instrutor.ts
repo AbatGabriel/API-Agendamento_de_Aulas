@@ -6,6 +6,7 @@ export interface IInstrutor extends Document {
   password: string;
   especialidades: string[];
   horariosDisponiveis: string[];
+  role: string;
 }
 
 const InstrutorSchema: Schema = new Schema({
@@ -14,6 +15,7 @@ const InstrutorSchema: Schema = new Schema({
   password: { type: String, required: true },
   especialidades: { type: [String], required: true },
   horariosDisponiveis: { type: [String], required: true },
+  role: { type: String, default: "Instructor" },
 });
 
 export const InstrutorModel = mongoose.model<IInstrutor>(
