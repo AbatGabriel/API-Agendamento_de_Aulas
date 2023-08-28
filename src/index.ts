@@ -6,6 +6,12 @@ import { connectToDB } from "./db/connect";
 
 const app = express();
 
+//routers
+const instructorRouter = require("./routes/instructor");
+
+//routes
+app.use("/", instructorRouter);
+
 app.get("/", (req: Request, res: Response) => {
   res.status(200).send("running...");
 });
