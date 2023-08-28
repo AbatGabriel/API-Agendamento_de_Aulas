@@ -6,7 +6,7 @@ import {
   createStudent,
   updateStudent,
   deleteStudent,
-} from "../controllers/student";
+} from "../Controllers/student";
 
 router.route("/students").get(getAllStudents);
 
