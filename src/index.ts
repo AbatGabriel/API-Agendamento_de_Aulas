@@ -13,12 +13,6 @@ import instructorRouter from "./routes/instructor";
 //routes
 app.use("/", instructorRouter);
 
-//routers
-const instructorRouter = require("./routes/instructor");
-
-//routes
-app.use("/", instructorRouter);
-
 app.get("/", (req: Request, res: Response) => {
   res.status(200).send("running...");
 });
