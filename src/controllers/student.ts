@@ -16,27 +16,24 @@ export const createStudent = async (req: Request, res: Response) => {
 };
 
 export const updateStudent = async (
-  req: Request,
+  req: Request | any,
   res: Response,
   next: NextFunction
 ) => {
   const { id: StudentId } = req.params;
-  const StudentDocument = await StudentModel.findOneAndUpdate(
-    {
-      _id: StudentId,
-    },
-    req.body,
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
+  const StudentDocument = await StudentModel.findById(StudentId);
+
   if (!StudentDocument) {
     return next(
       res
         .status(StatusCodes.NOT_FOUND)
         .json({ msg: `there is no student with id: ${StudentId}` })
     );
+  }
+  if (StudentDocument) {
+    StudentDocument.nome = req.body.nome;
+    StudentDocument.email = req.body.email;
+    StudentDocument.save();
   }
   res.status(StatusCodes.OK).json({ StudentDocument });
 };

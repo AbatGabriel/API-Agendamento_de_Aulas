@@ -37,4 +37,12 @@ function verifyRoles(...roles: string[]) {
   };
 }
 
-export { authMiddleware, verifyRoles };
+function verifyUser(req: Request | any, res: Response, next: NextFunction) {
+  if (req.user.id === req.params.id) {
+    next();
+  } else {
+    throw new Error("Outro usuario tentando alterar dados");
+  }
+}
+
+export { authMiddleware, verifyRoles, verifyUser };

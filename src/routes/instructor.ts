@@ -7,7 +7,7 @@ import {
   updateInstructor,
   deleteInstructor,
 } from "../controllers/instructor";
-import { authMiddleware, verifyRoles } from "../middleware/auth";
+import { authMiddleware, verifyRoles, verifyUser } from "../middleware/auth";
 import { loginInstructor } from "../controllers/main";
 
 router
@@ -20,10 +20,10 @@ router.route("/instructor/login").post(loginInstructor);
 
 router
   .route("/instructor/:id")
-  .put(authMiddleware, verifyRoles("Instructor"), updateInstructor);
+  .put(authMiddleware, verifyUser, updateInstructor);
 
 router
   .route("/instructor/:id")
-  .delete(authMiddleware, verifyRoles("Instructor"), deleteInstructor);
+  .delete(authMiddleware, verifyUser, deleteInstructor);
 
 export default router;
