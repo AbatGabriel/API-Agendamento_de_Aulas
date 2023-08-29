@@ -3,13 +3,16 @@ import { StudentModel } from "../models/aluno";
 import { StatusCodes } from "http-status-codes";
 
 export const getAllStudents = async (req: Request, res: Response) => {
-  const Students = await StudentModel.find({});
-  res.status(StatusCodes.OK).json({ Students });
+  const StudentsDocument = await StudentModel.find({});
+  res.status(StatusCodes.OK).json({ StudentsDocument });
 };
 
 export const createStudent = async (req: Request, res: Response) => {
-  const Student = await StudentModel.create({ ...req.body, role: "Student" });
-  res.status(StatusCodes.CREATED).json({ Student });
+  const StudentDocument = await StudentModel.create({
+    ...req.body,
+    role: "Student",
+  });
+  res.status(StatusCodes.CREATED).json({ StudentDocument });
 };
 
 export const updateStudent = async (
@@ -18,7 +21,7 @@ export const updateStudent = async (
   next: NextFunction
 ) => {
   const { id: StudentId } = req.params;
-  const Student = await StudentModel.findOneAndUpdate(
+  const StudentDocument = await StudentModel.findOneAndUpdate(
     {
       _id: StudentId,
     },
@@ -28,14 +31,14 @@ export const updateStudent = async (
       runValidators: true,
     }
   );
-  if (!Student) {
+  if (!StudentDocument) {
     return next(
       res
         .status(StatusCodes.NOT_FOUND)
         .json({ msg: `there is no student with id: ${StudentId}` })
     );
   }
-  res.status(StatusCodes.OK).json({ Student });
+  res.status(StatusCodes.OK).json({ StudentDocument });
 };
 
 export const deleteStudent = async (
@@ -44,8 +47,8 @@ export const deleteStudent = async (
   next: NextFunction
 ) => {
   const { id: StudentId } = req.params;
-  const Student = await StudentModel.findByIdAndRemove(StudentId);
-  if (!Student) {
+  const StudentDocument = await StudentModel.findByIdAndRemove(StudentId);
+  if (!StudentDocument) {
     return next(
       res
         .status(StatusCodes.NOT_FOUND)

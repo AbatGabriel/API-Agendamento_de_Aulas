@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
+import * as bcrypt from "bcryptjs";
 
 export interface IInstrutor extends Document {
   nome: string;
@@ -7,6 +8,7 @@ export interface IInstrutor extends Document {
   especialidades: string[];
   horariosDisponiveis: string[];
   role: string;
+  comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
 const InstrutorSchema: Schema = new Schema({
@@ -17,6 +19,22 @@ const InstrutorSchema: Schema = new Schema({
   horariosDisponiveis: { type: [String], required: true },
   role: { type: String, default: "Instructor" },
 });
+
+InstrutorSchema.pre<IInstrutor>("save", function (next) {
+  if (!this.isModified("password")) {
+    return next();
+  }
+  this.password = bcrypt.hashSync(this.password, 10);
+  next();
+});
+
+InstrutorSchema.methods.comparePassword = function (
+  this: IInstrutor,
+  candidatePassword: string
+): Promise<boolean> {
+  const hashedPassword = this.password;
+  return bcrypt.compare(candidatePassword, hashedPassword);
+};
 
 export const InstrutorModel = mongoose.model<IInstrutor>(
   "Instrutor",

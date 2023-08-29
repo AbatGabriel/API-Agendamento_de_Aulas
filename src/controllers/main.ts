@@ -11,10 +11,20 @@ const secret = process.env.JWT_SECRET
 async function loginStudent(req: Request, res: Response) {
   const { email, password } = req.body;
 
-  const student = await StudentModel.findOne({ email, password }).exec();
+  if (!email || !password) {
+    throw new Error("Please Provide email and password!");
+  }
+
+  const student = await StudentModel.findOne({ email }).exec();
 
   if (!student) {
-    throw new Error("Invalid User!");
+    throw new Error("Invalid Credentials!");
+  }
+
+  const passwordMatch = await student.comparePassword(password);
+
+  if (!passwordMatch) {
+    throw new Error("Invalid Credentials!");
   }
 
   const id = student._id;
@@ -31,10 +41,20 @@ async function loginStudent(req: Request, res: Response) {
 async function loginInstructor(req: Request, res: Response) {
   const { email, password } = req.body;
 
-  const instructor = await InstrutorModel.findOne({ email, password }).exec();
+  if (!email || !password) {
+    throw new Error("Please Provide email and password!");
+  }
+
+  const instructor = await InstrutorModel.findOne({ email }).exec();
 
   if (!instructor) {
-    throw new Error("Invalid Instructor!");
+    throw new Error("Invalid Credentials!");
+  }
+
+  const passwordMatch = await instructor.comparePassword(password);
+
+  if (!passwordMatch) {
+    throw new Error("Invalid Credentials!");
   }
 
   const id = instructor._id;
