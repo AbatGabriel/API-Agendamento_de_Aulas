@@ -31,6 +31,8 @@
     "jsonwebtoken": "^9.0.1",
     "mongodb": "^5.8.1",
     "mongoose": "^7.4.3",
-    "xss-clean": "^0.1.4"
+    "swagger-ui-express": "^5.0.0",
+    "xss-clean": "^0.1.4",
+    "yamljs": "^0.3.0"
   }
 }
