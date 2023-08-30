@@ -7,7 +7,7 @@ import {
   updateStudent,
   deleteStudent,
 } from "../controllers/student";
-import { authMiddleware, verifyRoles } from "../middleware/auth";
+import { authMiddleware, verifyRoles, verifyUser } from "../middleware/auth";
 import { loginStudent } from "../controllers/main";
 
 router
@@ -18,12 +18,8 @@ router.route("/student").post(createStudent);
 
 router.route("/student/login").post(loginStudent);
 
-router
-  .route("/student/:id")
-  .put(authMiddleware, verifyRoles("Student"), updateStudent);
+router.route("/student/:id").put(authMiddleware, verifyUser, updateStudent);
 
-router
-  .route("/student/:id")
-  .delete(authMiddleware, verifyRoles("Student"), deleteStudent);
+router.route("/student/:id").delete(authMiddleware, verifyUser, deleteStudent);
 
 export default router;
