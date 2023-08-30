@@ -1,0 +1,286 @@
+{
+	"info": {
+		"_postman_id": "c6a95432-61cb-42f9-9cfd-e903c31032e1",
+		"name": "API-Agendamento-de-Aulas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28636390"
+	},
+	"item": [
+		{
+			"name": "Students routes",
+			"item": [
+				{
+					"name": "Get all students data",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWUzMjZiY2UzNGJmY2VhMzI2ZjM0ZiIsIm5vbWUiOiJqdWFvIiwicm9sZSI6IlN0dWRlbnQiLCJpYXQiOjE2OTMzMzIxNjcsImV4cCI6MTY5NTkyNDE2N30.TuTA_MLC5qcmyltrl8M_BZ1jmhHtmUD-5WSosl-2bzs",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{MAIN-URL}}/students",
+							"host": [
+								"{{MAIN-URL}}"
+							],
+							"path": [
+								"students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create student data",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"juao\",\r\n    \"email\": \"juao@email.com\",\r\n    \"password\": \"secret\",\r\n    \"role\": \"Student\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{MAIN-URL}}/student",
+							"host": [
+								"{{MAIN-URL}}"
+							],
+							"path": [
+								"student"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logs student in application",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"juao@email.com\",\r\n    \"password\": \"secret\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{MAIN-URL}}/student/login",
+							"host": [
+								"{{MAIN-URL}}"
+							],
+							"path": [
+								"student",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Updates student data",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWUyZmM1Y2UzNGJmY2VhMzI2ZjM0YSIsIm5vbWUiOiJMdWNhcyBTY29tbWVnbmEiLCJyb2xlIjoiU3R1ZGVudCIsImlhdCI6MTY5MzMzMTc5NiwiZXhwIjoxNjk1OTIzNzk2fQ.wbKnFu96w3pLAZcrV5yFtgZDBCQjCdt2U3J9ESRj6-c",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"joao da silva\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{MAIN-URL}}/student/{{Student_ID}}",
+							"host": [
+								"{{MAIN-URL}}"
+							],
+							"path": [
+								"student",
+								"{{Student_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletes logged in student data",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWUyZmM1Y2UzNGJmY2VhMzI2ZjM0YSIsIm5vbWUiOiJMdWNhcyBTY29tbWVnbmEiLCJyb2xlIjoiU3R1ZGVudCIsImlhdCI6MTY5MzMzMTc5NiwiZXhwIjoxNjk1OTIzNzk2fQ.wbKnFu96w3pLAZcrV5yFtgZDBCQjCdt2U3J9ESRj6-c",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{MAIN-URL}}/student/{{Student_ID}}",
+							"host": [
+								"{{MAIN-URL}}"
+							],
+							"path": [
+								"student",
+								"{{Student_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Instructors routes",
+			"item": [
+				{
+					"name": "Gets all instructors data if role is Student",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWUzMjZiY2UzNGJmY2VhMzI2ZjM0ZiIsIm5vbWUiOiJqdWFvIiwicm9sZSI6IlN0dWRlbnQiLCJpYXQiOjE2OTMzMzIzNzYsImV4cCI6MTY5NTkyNDM3Nn0.3tWWZ7WfjgeJeIqbofOS8CbmVF6w34w8_PNAVyIfwnc",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{MAIN-URL}}/instructors",
+							"host": [
+								"{{MAIN-URL}}"
+							],
+							"path": [
+								"instructors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creates instructor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"joana da silva\",\r\n    \"email\": \"joana@email.com\",\r\n    \"password\": \"secret\",\r\n    \"especialidades\": [\"node\", \"react\"],\r\n    \"horariosDisponiveis\": [\"12:00h\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{MAIN-URL}}/instructor",
+							"host": [
+								"{{MAIN-URL}}"
+							],
+							"path": [
+								"instructor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logs instructor in application  ",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"joana@email.com\",\r\n    \"password\": \"secret\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{MAIN-URL}}/instructor/login",
+							"host": [
+								"{{MAIN-URL}}"
+							],
+							"path": [
+								"instructor",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Updates instructor data",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWUzNDQyY2UzNGJmY2VhMzI2ZjM1NiIsIm5vbWUiOiJqb2FuYSBkYSBzaWx2YSIsInJvbGUiOiJJbnN0cnVjdG9yIiwiaWF0IjoxNjkzMzMyNzI0LCJleHAiOjE2OTU5MjQ3MjR9.en6UiJrOjFhaVolnzIaaGANvMWZTF6EIiIhoUpTH0vI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"paula\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{MAIN-URL}}/instructor/{{Instructor_ID}}",
+							"host": [
+								"{{MAIN-URL}}"
+							],
+							"path": [
+								"instructor",
+								"{{Instructor_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletes logged in intructor data",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWUzNDQyY2UzNGJmY2VhMzI2ZjM1NiIsIm5vbWUiOiJqb2FuYSBkYSBzaWx2YSIsInJvbGUiOiJJbnN0cnVjdG9yIiwiaWF0IjoxNjkzMzMyNzI0LCJleHAiOjE2OTU5MjQ3MjR9.en6UiJrOjFhaVolnzIaaGANvMWZTF6EIiIhoUpTH0vI",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{MAIN-URL}}/instructor/{{Instructor_ID}}",
+							"host": [
+								"{{MAIN-URL}}"
+							],
+							"path": [
+								"instructor",
+								"{{Instructor_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -8,7 +8,10 @@ export const getAllInstructors = async (req: Request, res: Response) => {
 };
 
 export const createInstructor = async (req: Request, res: Response) => {
-  const Instructor = await InstrutorModel.create(req.body);
+  const Instructor = await InstrutorModel.create({
+    ...req.body,
+    role: "Instructor",
+  });
   res.status(StatusCodes.CREATED).json({ Instructor });
 };
 
