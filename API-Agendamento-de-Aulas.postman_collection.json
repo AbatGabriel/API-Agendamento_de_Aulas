@@ -16,15 +16,17 @@
 						"header": [
 							{
 								"key": "authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWUzMjZiY2UzNGJmY2VhMzI2ZjM0ZiIsIm5vbWUiOiJqdWFvIiwicm9sZSI6IlN0dWRlbnQiLCJpYXQiOjE2OTMzMzIxNjcsImV4cCI6MTY5NTkyNDE2N30.TuTA_MLC5qcmyltrl8M_BZ1jmhHtmUD-5WSosl-2bzs",
+								"value": "Bearer <insira-o-token>",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "{{MAIN-URL}}/students",
+							"raw": "http://localhost:3000/students",
+							"protocol": "http",
 							"host": [
-								"{{MAIN-URL}}"
+								"localhost"
 							],
+							"port": "3000",
 							"path": [
 								"students"
 							]
@@ -39,7 +41,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\": \"juao\",\r\n    \"email\": \"juao@email.com\",\r\n    \"password\": \"secret\",\r\n    \"role\": \"Student\"\r\n}",
+							"raw": "{\r\n    \"nome\": \"nome-do-aluno\",\r\n    \"email\": \"email-do-aluno\",\r\n    \"password\": \"senha-do-aluno\",\r\n    \"role\": \"Student\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -47,10 +49,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{MAIN-URL}}/student",
+							"raw": "http://localhost:3000/student",
+							"protocol": "http",
 							"host": [
-								"{{MAIN-URL}}"
+								"localhost"
 							],
+							"port": "3000",
 							"path": [
 								"student"
 							]
@@ -65,7 +69,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"juao@email.com\",\r\n    \"password\": \"secret\"\r\n}",
+							"raw": "{\r\n    \"email\": \"email-do-aluno\",\r\n    \"password\": \"senha-do-aluno\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -73,10 +77,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{MAIN-URL}}/student/login",
+							"raw": "http://localhost:3000/student/login",
+							"protocol": "http",
 							"host": [
-								"{{MAIN-URL}}"
+								"localhost"
 							],
+							"port": "3000",
 							"path": [
 								"student",
 								"login"
@@ -88,17 +94,20 @@
 				{
 					"name": "Updates student data",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "PUT",
 						"header": [
 							{
 								"key": "authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWUyZmM1Y2UzNGJmY2VhMzI2ZjM0YSIsIm5vbWUiOiJMdWNhcyBTY29tbWVnbmEiLCJyb2xlIjoiU3R1ZGVudCIsImlhdCI6MTY5MzMzMTc5NiwiZXhwIjoxNjk1OTIzNzk2fQ.wbKnFu96w3pLAZcrV5yFtgZDBCQjCdt2U3J9ESRj6-c",
+								"value": "Bearer <insira-o-token>",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\": \"joao da silva\"\r\n}",
+							"raw": "{\r\n    \"nome\": \"nome-do-aluno\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -106,13 +115,15 @@
 							}
 						},
 						"url": {
-							"raw": "{{MAIN-URL}}/student/{{Student_ID}}",
+							"raw": "http://localhost:3000/student/<insira-o-id-do-aluno-logado>",
+							"protocol": "http",
 							"host": [
-								"{{MAIN-URL}}"
+								"localhost"
 							],
+							"port": "3000",
 							"path": [
 								"student",
-								"{{Student_ID}}"
+								"<insira-o-id-do-aluno-logado>"
 							]
 						}
 					},
@@ -125,18 +136,20 @@
 						"header": [
 							{
 								"key": "authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWUyZmM1Y2UzNGJmY2VhMzI2ZjM0YSIsIm5vbWUiOiJMdWNhcyBTY29tbWVnbmEiLCJyb2xlIjoiU3R1ZGVudCIsImlhdCI6MTY5MzMzMTc5NiwiZXhwIjoxNjk1OTIzNzk2fQ.wbKnFu96w3pLAZcrV5yFtgZDBCQjCdt2U3J9ESRj6-c",
+								"value": "Bearer <insira-o-token>",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "{{MAIN-URL}}/student/{{Student_ID}}",
+							"raw": "http://localhost:3000/student/<insira-o-id-do-aluno-logado>",
+							"protocol": "http",
 							"host": [
-								"{{MAIN-URL}}"
+								"localhost"
 							],
+							"port": "3000",
 							"path": [
 								"student",
-								"{{Student_ID}}"
+								"<insira-o-id-do-aluno-logado>"
 							]
 						}
 					},
@@ -154,15 +167,17 @@
 						"header": [
 							{
 								"key": "authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWUzMjZiY2UzNGJmY2VhMzI2ZjM0ZiIsIm5vbWUiOiJqdWFvIiwicm9sZSI6IlN0dWRlbnQiLCJpYXQiOjE2OTMzMzIzNzYsImV4cCI6MTY5NTkyNDM3Nn0.3tWWZ7WfjgeJeIqbofOS8CbmVF6w34w8_PNAVyIfwnc",
+								"value": "Bearer <insira-o-token>",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "{{MAIN-URL}}/instructors",
+							"raw": "http://localhost:3000/instructors",
+							"protocol": "http",
 							"host": [
-								"{{MAIN-URL}}"
+								"localhost"
 							],
+							"port": "3000",
 							"path": [
 								"instructors"
 							]
@@ -177,7 +192,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\": \"joana da silva\",\r\n    \"email\": \"joana@email.com\",\r\n    \"password\": \"secret\",\r\n    \"especialidades\": [\"node\", \"react\"],\r\n    \"horariosDisponiveis\": [\"12:00h\"]\r\n}",
+							"raw": "{\r\n    \"nome\": \"nome-do-instrutor\",\r\n    \"email\": \"email-do-instrutor\",\r\n    \"password\": \"senha-do-instrutor\",\r\n    \"especialidades\": [\"especialidade1\", \"especialidade2\"],\r\n    \"horariosDisponiveis\": [\"horario-disponivel\"]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -185,10 +200,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{MAIN-URL}}/instructor",
+							"raw": "http://localhost:3000/instructor",
+							"protocol": "http",
 							"host": [
-								"{{MAIN-URL}}"
+								"localhost"
 							],
+							"port": "3000",
 							"path": [
 								"instructor"
 							]
@@ -203,7 +220,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"joana@email.com\",\r\n    \"password\": \"secret\"\r\n}",
+							"raw": "{\r\n    \"email\": \"email-do-instrutor\",\r\n    \"password\": \"senha-do-instrutor\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -211,10 +228,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{MAIN-URL}}/instructor/login",
+							"raw": "http://localhost:3000/instructor/login",
+							"protocol": "http",
 							"host": [
-								"{{MAIN-URL}}"
+								"localhost"
 							],
+							"port": "3000",
 							"path": [
 								"instructor",
 								"login"
@@ -230,13 +249,13 @@
 						"header": [
 							{
 								"key": "authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWUzNDQyY2UzNGJmY2VhMzI2ZjM1NiIsIm5vbWUiOiJqb2FuYSBkYSBzaWx2YSIsInJvbGUiOiJJbnN0cnVjdG9yIiwiaWF0IjoxNjkzMzMyNzI0LCJleHAiOjE2OTU5MjQ3MjR9.en6UiJrOjFhaVolnzIaaGANvMWZTF6EIiIhoUpTH0vI",
+								"value": "Bearer <insira-o-token>",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\": \"paula\"\r\n}",
+							"raw": "{\r\n    \"nome\": \"nome-do-instrutor\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -244,13 +263,15 @@
 							}
 						},
 						"url": {
-							"raw": "{{MAIN-URL}}/instructor/{{Instructor_ID}}",
+							"raw": "http://localhost:3000/instructor/<insira-o-id-do-instrutor-logado>",
+							"protocol": "http",
 							"host": [
-								"{{MAIN-URL}}"
+								"localhost"
 							],
+							"port": "3000",
 							"path": [
 								"instructor",
-								"{{Instructor_ID}}"
+								"<insira-o-id-do-instrutor-logado>"
 							]
 						}
 					},
@@ -263,18 +284,20 @@
 						"header": [
 							{
 								"key": "authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWUzNDQyY2UzNGJmY2VhMzI2ZjM1NiIsIm5vbWUiOiJqb2FuYSBkYSBzaWx2YSIsInJvbGUiOiJJbnN0cnVjdG9yIiwiaWF0IjoxNjkzMzMyNzI0LCJleHAiOjE2OTU5MjQ3MjR9.en6UiJrOjFhaVolnzIaaGANvMWZTF6EIiIhoUpTH0vI",
+								"value": "Bearer <insira-o-token>",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "{{MAIN-URL}}/instructor/{{Instructor_ID}}",
+							"raw": "http://localhost:3000/instructor/<insira-o-id-do-instrutor-logado>",
+							"protocol": "http",
 							"host": [
-								"{{MAIN-URL}}"
+								"localhost"
 							],
+							"port": "3000",
 							"path": [
 								"instructor",
-								"{{Instructor_ID}}"
+								"<insira-o-id-do-instrutor-logado>"
 							]
 						}
 					},
