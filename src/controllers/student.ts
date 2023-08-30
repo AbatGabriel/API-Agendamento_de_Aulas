@@ -2,11 +2,13 @@ import { Request, Response, NextFunction } from "express";
 import { StudentModel } from "../models/aluno";
 import { StatusCodes } from "http-status-codes";
 
+// Gets all students data
 export const getAllStudents = async (req: Request, res: Response) => {
   const StudentsDocument = await StudentModel.find({});
   res.status(StatusCodes.OK).json({ StudentsDocument });
 };
 
+// Creates new student
 export const createStudent = async (req: Request, res: Response) => {
   const StudentDocument = await StudentModel.create({
     ...req.body,
@@ -15,6 +17,7 @@ export const createStudent = async (req: Request, res: Response) => {
   res.status(StatusCodes.CREATED).json({ StudentDocument });
 };
 
+// Updates student data
 export const updateStudent = async (
   req: Request | any,
   res: Response,
@@ -38,6 +41,7 @@ export const updateStudent = async (
   res.status(StatusCodes.OK).json({ StudentDocument });
 };
 
+// Deletes student data
 export const deleteStudent = async (
   req: Request,
   res: Response,

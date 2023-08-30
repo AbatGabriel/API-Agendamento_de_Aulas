@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 import * as bcrypt from "bcryptjs";
 
+// Instructor interface
 export interface IInstrutor extends Document {
   nome: string;
   email: string;
@@ -11,6 +12,7 @@ export interface IInstrutor extends Document {
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
+// Instructor mongoDB document Schema
 const InstrutorSchema: Schema = new Schema({
   nome: { type: String, required: true },
   email: { type: String, required: true, unique: true },
@@ -20,6 +22,7 @@ const InstrutorSchema: Schema = new Schema({
   role: { type: String, default: "Instructor" },
 });
 
+// pre-saves hashed password in new created instructor document
 InstrutorSchema.pre<IInstrutor>("save", function (next) {
   if (!this.isModified("password")) {
     return next();
@@ -28,6 +31,7 @@ InstrutorSchema.pre<IInstrutor>("save", function (next) {
   next();
 });
 
+// Compares given password with hashed one in document
 InstrutorSchema.methods.comparePassword = function (
   this: IInstrutor,
   candidatePassword: string

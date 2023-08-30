@@ -4,10 +4,12 @@ import { StatusCodes } from "http-status-codes";
 import { StudentModel } from "../models/aluno";
 import { InstrutorModel } from "../models/instrutor";
 
+// JWT secret for token generation
 const secret = process.env.JWT_SECRET
   ? process.env.JWT_SECRET
   : "5c7ee2074b65853f71fc5a01ce194ff26deedf6daacdb715c6beefdfd3f31b35";
 
+// Logs student in and returns it's JWT token
 async function loginStudent(req: Request, res: Response) {
   const { email, password } = req.body;
 
@@ -38,6 +40,7 @@ async function loginStudent(req: Request, res: Response) {
   res.status(StatusCodes.OK).json({ msg: "User confirmed and logged!", token });
 }
 
+// Logs instructor in and returns it's JWT token
 async function loginInstructor(req: Request, res: Response) {
   const { email, password } = req.body;
 

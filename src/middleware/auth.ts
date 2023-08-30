@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 
+// Middleware for authentication with JWT token
 async function authMiddleware(
   req: Request | any,
   res: Response,
@@ -27,6 +28,7 @@ async function authMiddleware(
   }
 }
 
+// Verify roles of user for route authorization
 function verifyRoles(...roles: string[]) {
   return (req: Request | any, res: Response, next: NextFunction) => {
     if (!roles.includes(req.user.role)) {
@@ -37,6 +39,7 @@ function verifyRoles(...roles: string[]) {
   };
 }
 
+// Verifies if user can has permission for some routes that it's id needs to be the same of params
 function verifyUser(req: Request | any, res: Response, next: NextFunction) {
   if (req.user.id === req.params.id) {
     next();

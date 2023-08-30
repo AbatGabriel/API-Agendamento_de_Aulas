@@ -10,6 +10,8 @@ import {
 import { authMiddleware, verifyRoles, verifyUser } from "../middleware/auth";
 import { loginStudent } from "../controllers/main";
 
+// All students routes
+
 router
   .route("/students")
   .get(authMiddleware, verifyRoles("Student"), getAllStudents);
