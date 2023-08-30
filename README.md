@@ -30,10 +30,10 @@ Na seção "Database" da sua conta MongoDB, escolha uma data base, clique em con
 Crie na pasta raiz da aplicação um arquivo ".env" e crie um valor "MONGO_URI" e iguale a connection string gerada, lembrando de completar os parametros dela. A connection string tem o seguinte formato:
 
 ```
-mongodb+srv://<nome-do-usuario>:<password>@nodeexpressprojects.k3spluk.mongodb.net/<database-name>?retryWrites=true&w=majority
+mongodb+srv://<nome-do-usuario>:<password>@<host>.mongodb.net/<database-name>?retryWrites=true&w=majority
 ```
 
-Sendo os campos "password" a senha da sua database, "database-name" o nome da database a ser criada e o campo "nome-do-usuario" o seu nome de usuário no MongoDB, sendo esse campo gerado automaticamente.
+Sendo os campos "password" a senha da sua database, "database-name" o nome da database a ser criada e o campo "nome-do-usuario" o seu nome de usuário no MongoDB e o campo "host" o cluster do seu banco de dados, sendo esses dois últimos campos gerados automaticamente.
 
 Após essas configurações da aplicação e do MongoDB, está na hora de configurar o Postman.
 
