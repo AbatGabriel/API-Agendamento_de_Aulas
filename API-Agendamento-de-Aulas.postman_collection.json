@@ -1,0 +1,309 @@
+{
+	"info": {
+		"_postman_id": "c6a95432-61cb-42f9-9cfd-e903c31032e1",
+		"name": "API-Agendamento-de-Aulas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28636390"
+	},
+	"item": [
+		{
+			"name": "Students routes",
+			"item": [
+				{
+					"name": "Get all students data",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer <insira-o-token>",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/students",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create student data",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"nome-do-aluno\",\r\n    \"email\": \"email-do-aluno\",\r\n    \"password\": \"senha-do-aluno\",\r\n    \"role\": \"Student\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/student",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"student"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logs student in application",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"email-do-aluno\",\r\n    \"password\": \"senha-do-aluno\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/student/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"student",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Updates student data",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer <insira-o-token>",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"nome-do-aluno\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/student/<insira-o-id-do-aluno-logado>",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"student",
+								"<insira-o-id-do-aluno-logado>"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletes logged in student data",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer <insira-o-token>",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/student/<insira-o-id-do-aluno-logado>",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"student",
+								"<insira-o-id-do-aluno-logado>"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Instructors routes",
+			"item": [
+				{
+					"name": "Gets all instructors data if role is Student",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer <insira-o-token>",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/instructors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"instructors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creates instructor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"nome-do-instrutor\",\r\n    \"email\": \"email-do-instrutor\",\r\n    \"password\": \"senha-do-instrutor\",\r\n    \"especialidades\": [\"especialidade1\", \"especialidade2\"],\r\n    \"horariosDisponiveis\": [\"horario-disponivel\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/instructor",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"instructor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logs instructor in application  ",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"email-do-instrutor\",\r\n    \"password\": \"senha-do-instrutor\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/instructor/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"instructor",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Updates instructor data",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer <insira-o-token>",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"nome-do-instrutor\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/instructor/<insira-o-id-do-instrutor-logado>",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"instructor",
+								"<insira-o-id-do-instrutor-logado>"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletes logged in intructor data",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer <insira-o-token>",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/instructor/<insira-o-id-do-instrutor-logado>",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"instructor",
+								"<insira-o-id-do-instrutor-logado>"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

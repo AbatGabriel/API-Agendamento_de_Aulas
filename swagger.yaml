@@ -1,0 +1,398 @@
+openapi: 3.0.0
+info:
+  title: API de Agendamento de aulas
+  description: API de agendamento de aulas com diferentes instrutores.
+  contact: {}
+  version: "1.0"
+servers:
+  - url: http://localhost:3000
+    variables: {}
+paths:
+  /students:
+    get:
+      tags:
+        - Students routes
+      summary: Get all students data
+      description: Requisita os dados de todos os estudantes. O usuário deve estar autenticado como um instrutor para ter acesso a essa rota.
+      operationId: Get-all-students-data
+      parameters: []
+      responses:
+        "200":
+          description: "São fornecidos os dados de todos os estudantes em formato JSON."
+          headers: {}
+      deprecated: false
+  /student:
+    post:
+      tags:
+        - Students routes
+      summary: Create student data
+      description: Cria os dados de estudante, sendo esses dados fornecidos no corpo da requisição. O dado de "role" é opcional, sendo o valor padrão o valor "Student".
+      operationId: Create-student-data
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/CreatestudentdataRequest"
+                - example:
+                    nome: nome-do-estudante
+                    email: email-do-estudante
+                    password: senha-do-estudante
+                    role: Student
+            example:
+              nome: nome-do-estudante
+              email: email-do-estudante
+              password: senha-do-estudante
+              role: Student
+        required: true
+      responses:
+        "200":
+          description: "Retorna os dados do estudante criado em formato JSON."
+          headers: {}
+      deprecated: false
+      security: []
+  /student/login:
+    post:
+      tags:
+        - Students routes
+      summary: Logs student in application
+      description: Loga um aluno na API, sendo que os dados de email e senha devem ser fornecidos no corpo da requisição.
+      operationId: Logsstudentinapplication
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/LogsstudentinapplicationRequest"
+                - example:
+                    email: email-do-estudante
+                    password: senha-do-estudante
+            example:
+              email: email-do-estudante
+              password: senha-do-estudante
+        required: true
+      responses:
+        "200":
+          description: "É retornado um JSON com uma mensagem de sucesso e o valor do token JWT do usuário."
+          headers: {}
+      deprecated: false
+      security: []
+  /student/{Student_ID}:
+    put:
+      tags:
+        - Students routes
+      summary: Updates student data
+      description: Atualiza os dados de um aluno, sendo que o id do aluno nos params deve ser o mesmo do aluno logado.
+      operationId: Updatesstudentdata
+      parameters:
+        - name: Student_ID
+          in: path
+          description: "ID do estudante como parâmetro de rota."
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/UpdatesstudentdataRequest"
+                - example:
+                    nome: nome-do-aluno
+                    email: email-do-aluno
+            example:
+              nome: nome-do-aluno
+              email: email-do-aluno
+        required: true
+      responses:
+        "200":
+          description: "Retorna os dados do estudante atualizados em JSON."
+          headers: {}
+      deprecated: false
+    delete:
+      tags:
+        - Students routes
+      summary: Deletes logged in student data
+      description: Deleta os dados de um aluno, sendo que o id do aluno nos params deve ser o mesmo do aluno logado.
+      operationId: Deletesloggedinstudentdata
+      parameters:
+        - name: Student_ID
+          in: path
+          description: "ID do estudante como parâmetro de rota."
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "Retorna uma mensagem de sucesso."
+          headers: {}
+      deprecated: false
+  /instructors:
+    get:
+      tags:
+        - Instructors routes
+      summary: Gets all instructors data if role is Student
+      description: Recebe todos os dados de todos os instrutores, sendo que o usuário deve estar logado como um aluno.
+      operationId: GetsallinstructorsdataifroleisStudent
+      parameters: []
+      responses:
+        "200":
+          description: "Retorna os dados de todos os instrutores em formato JSON."
+          headers: {}
+      deprecated: false
+  /instructor:
+    post:
+      tags:
+        - Instructors routes
+      summary: Creates instructor
+      description: Cria os dados de um instrutor, sendo que esses dados devem ser passados no corpo da requisição.
+      operationId: Createsinstructor
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/CreatesinstructorRequest"
+                - example:
+                    nome: nome-do-instrutor
+                    email: email-do-instrutor
+                    password: senha-do-instrutor
+                    especialidades:
+                      - especialidade1
+                      - especialidade2
+                    horariosDisponiveis:
+                      - horario-disponivel
+            example:
+              nome: nome-do-instrutor
+              email: email-do-instrutor
+              password: senha-do-instrutor
+              especialidades:
+                - especialidade1
+                - especialidade2
+              horariosDisponiveis:
+                - horario-disponivel
+        required: true
+      responses:
+        "200":
+          description: "Retorna os dados do instrutor criado em formato JSON."
+          headers: {}
+      deprecated: false
+      security: []
+  /instructor/login:
+    post:
+      tags:
+        - Instructors routes
+      summary: Logs instructor in application
+      description: Loga um instrutor na API. Os dados de email e senha devem ser fornecidos no corpo da requisição.
+      operationId: Logsinstructorinapplication
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/LogsinstructorinapplicationRequest"
+                - example:
+                    email: email-do-instrutor
+                    password: senha-do-instrutor
+            example:
+              email: email-do-instrutor
+              password: senha-do-instrutor
+        required: true
+      responses:
+        "200":
+          description: "Retorna uma mensagem de sucesso e o valor do token JWT do instrutor logado em formato JSON."
+          headers: {}
+      deprecated: false
+      security: []
+  /instructor/{Instructor_ID}:
+    put:
+      tags:
+        - Instructors routes
+      summary: Updates instructor data
+      description: Atualiza os dados de um instrutor, sendo que o id do instrutor nos params deve ser o mesmo do instrutor logado.
+      operationId: Updatesinstructordata
+      parameters:
+        - name: Instructor_ID
+          in: path
+          description: "ID do instrutor como parâmetro de rota."
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/UpdatesinstructordataRequest"
+                - example:
+                    nome: nome-do-instrutor
+                    email: email-do-instrutor
+                    especialidades:
+                      - especialidade1
+                      - especialidade2
+                    horariosDisponiveis:
+                      - horario-disponivel1
+                      - horario-disponivel2
+            example:
+              nome: nome-do-instrutor
+              email: email-do-instrutor
+              especialidades:
+                - especialidade1
+                - especialidade2
+              horariosDisponiveis:
+                - horario-disponivel1
+                - horario-disponivel2
+        required: true
+      responses:
+        "200":
+          description: "Retorna os dados atualizados do instrutor em formato JSON."
+          headers: {}
+      deprecated: false
+    delete:
+      tags:
+        - Instructors routes
+      summary: Deletes logged in intructor data
+      description: Deleta os dados de um instrutor, sendo que o id do instrutor nos params deve ser o mesmo do instrutor logado.
+      operationId: Deletesloggedinintructordata
+      parameters:
+        - name: Instructor_ID
+          in: path
+          description: "ID do instrutor como parâmetro de rota."
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "Retorna uma mensagem de sucesso."
+          headers: {}
+      deprecated: false
+components:
+  schemas:
+    CreatestudentdataRequest:
+      title: Create-Student-Data-Request
+      required:
+        - nome
+        - email
+        - password
+        - role
+      type: object
+      properties:
+        nome:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+      example:
+        nome: João da Silva
+        email: joao@email.com
+        password: secret
+        role: Student
+    LogsstudentinapplicationRequest:
+      title: Logs-Student-In-Application-Request
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: joao@email.com
+        password: secret
+    UpdatesstudentdataRequest:
+      title: Updates-Student-Data-Request
+      required:
+        - nome
+      type: object
+      properties:
+        nome:
+          type: string
+      example:
+        nome: Pedro da Silva
+    CreatesinstructorRequest:
+      title: Creates-Instructor-Request
+      required:
+        - nome
+        - email
+        - password
+        - especialidades
+        - horariosDisponiveis
+      type: object
+      properties:
+        nome:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        especialidades:
+          type: array
+          items:
+            type: string
+          description: ""
+        horariosDisponiveis:
+          type: array
+          items:
+            type: string
+          description: ""
+      example:
+        nome: Joana da Silva
+        email: joana@email.com
+        password: secret
+        especialidades:
+          - node
+          - react
+        horariosDisponiveis:
+          - 12:00h
+    LogsinstructorinapplicationRequest:
+      title: Logs-Instructor-In-Application-Request
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: joana@email.com
+        password: secret
+    UpdatesinstructordataRequest:
+      title: Updates-Instructor-Data-Request
+      required:
+        - nome
+      type: object
+      properties:
+        nome:
+          type: string
+      example:
+        nome: Paula da Silva
+  securitySchemes:
+    httpBearer:
+      type: http
+      scheme: bearer
+security:
+  - httpBearer: []
+tags:
+  - name: Students routes
+  - name: Instructors routes
