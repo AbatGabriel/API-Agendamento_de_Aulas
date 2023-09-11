@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { UploadedFile } from "express-fileupload";
+import { SchedulingModel } from "../models/agendamento";
 import fs from "fs";
 
 //cloudinary settings
@@ -14,17 +15,11 @@ export const uploadFile = async (req: Request, res: Response) => {
   if (!req.files || !req.files.file) {
     return res.status(400).json({ error: "No file uploaded." });
   }
-  //console.log(req.files.file);
 
   const file = req.files.file as UploadedFile;
 
-  // console.log("file tempfilepath:", file.tempFilePath);
-  // console.log("filename", file.name);
-
   const allowedFormats = ["txt", "docx", "pdf"];
   const fileExtension = file.name.split(".").pop();
-
-  // console.log("file extension:", fileExtension);
 
   if (!fileExtension || !allowedFormats.includes(fileExtension)) {
     return res.status(400).json({ error: "Invalid file format." });
@@ -36,15 +31,42 @@ export const uploadFile = async (req: Request, res: Response) => {
     resource_type: "auto",
   });
 
-  // console.log(result);
-
   if (!result) {
     res.status(400).json({
       error:
         "Something went wrong while uploading the file in cloudinary. Please ty again.",
     });
   }
+
   fs.unlinkSync(file.tempFilePath);
 
+  const { id: agendamentoId } = req.params;
+  const agendamento = await SchedulingModel.findById(
+    { _id: agendamentoId },
+    req.body
+  );
+
+  if (!agendamento) {
+    return res.status(404).json({ error: "Scheduling not found." });
+  }
+
+  agendamento.arquivos.push(result.secure_url);
+
+  await agendamento.save();
+
   return res.status(200).json({ file: { src: result.secure_url } });
+};
+
+export const getAgendamentoUploads = async (req: Request, res: Response) => {
+  const { id: agendamentoId } = req.params;
+  const agendamento = await SchedulingModel.findById(
+    { _id: agendamentoId },
+    req.body
+  );
+
+  if (!agendamento) {
+    return res.status(404).json({ error: "Scheduling not found." });
+  }
+
+  return agendamento.arquivos;
 };
