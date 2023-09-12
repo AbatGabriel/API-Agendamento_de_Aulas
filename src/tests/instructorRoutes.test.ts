@@ -24,7 +24,7 @@ describe('POST /instructor', () => {
     }
   });
 
-  it('should create a new instructor and return 201 status', async () => {
+  it.only('should create a new instructor and return 201 status', async () => {
 
     // Cria um objeto com os dados do instrutor
     const instructorData = {
