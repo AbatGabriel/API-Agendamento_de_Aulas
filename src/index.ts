@@ -19,6 +19,7 @@ app.use(express.json());
 import instructorRouter from "./routes/instructor";
 import studentRouter from "./routes/student";
 import uploadRouter from "./routes/upload";
+import scheduleRouter from "./routes/agendamento";
 
 // Swagger docs route
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
@@ -27,6 +28,7 @@ app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use("/", instructorRouter);
 app.use("/", studentRouter);
 app.use("/", uploadRouter);
+app.use("/", scheduleRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).send("running...");

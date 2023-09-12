@@ -40,9 +40,9 @@ export const uploadFile = async (req: Request, res: Response) => {
 
   fs.unlinkSync(file.tempFilePath);
 
-  const { id: agendamentoId } = req.params;
+  const { id: idAgendamento } = req.params;
   const agendamento = await SchedulingModel.findById(
-    { _id: agendamentoId },
+    { _id: idAgendamento },
     req.body
   );
 
@@ -52,21 +52,31 @@ export const uploadFile = async (req: Request, res: Response) => {
 
   agendamento.arquivos.push(result.secure_url);
 
+  if (!result.secure_url) {
+    res.status(500).json({
+      msg: "Something went wrong while uploading the file in cloudinary. Please ty again.",
+    });
+  }
+
   await agendamento.save();
 
   return res.status(200).json({ file: { src: result.secure_url } });
 };
 
-export const getAgendamentoUploads = async (req: Request, res: Response) => {
-  const { id: agendamentoId } = req.params;
-  const agendamento = await SchedulingModel.findById(
-    { _id: agendamentoId },
-    req.body
-  );
+export const getScheduleUploads = async (req: Request, res: Response) => {
+  const { id: idAgendamento } = req.params;
+  const agendamento = await SchedulingModel.findById({ _id: idAgendamento });
 
   if (!agendamento) {
     return res.status(404).json({ error: "Scheduling not found." });
   }
 
-  return agendamento.arquivos;
+  const uploads = agendamento.arquivos;
+
+  if (!uploads) {
+    res.status(500).json({
+      msg: `Scheduling with id: ${idAgendamento} has no uploaded files.`,
+    });
+  }
+  return res.status(200).json({ uploads });
 };
