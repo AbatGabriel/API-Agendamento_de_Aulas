@@ -47,4 +47,6 @@ const start = async function () {
   }
 };
 
+export default app;
+
 start();

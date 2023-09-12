@@ -14,7 +14,7 @@ export const createInstructor = async (req: Request, res: Response) => {
     ...req.body,
     role: "Instructor",
   });
-  res.status(StatusCodes.CREATED).json({ Instructor });
+  res.status(StatusCodes.CREATED).send({ Instructor });
 };
 
 // Updates instructor data
