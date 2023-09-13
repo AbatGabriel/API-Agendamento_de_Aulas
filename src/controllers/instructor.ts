@@ -59,10 +59,20 @@ export const updateInstructor = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { id: InstrutorId } = req.params;
-  const Instrutor = await InstrutorModel.findOneAndUpdate(
+  const { id: InstructorId } = req.params;
+
+  let instructor = await InstrutorModel.findOne({ _id: InstructorId });
+  if (!instructor) {
+    return next(
+      res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: `There is no instructor with id: ${InstructorId}` })
+    );
+  }
+
+  instructor = await InstrutorModel.findOneAndUpdate(
     {
-      _id: InstrutorId,
+      _id: InstructorId,
     },
     req.body,
     {
@@ -70,14 +80,8 @@ export const updateInstructor = async (
       runValidators: true,
     }
   );
-  if (!Instrutor) {
-    return next(
-      res
-        .status(StatusCodes.NOT_FOUND)
-        .json({ msg: `There is no instructor with id: ${InstrutorId}` })
-    );
-  }
-  res.status(StatusCodes.OK).json({ Instrutor });
+
+  res.status(StatusCodes.OK).json({ instructor });
 };
 
 // Deletes instructor data
