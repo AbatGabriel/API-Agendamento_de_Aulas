@@ -4,13 +4,18 @@ import {
   updateSchedule,
   deleteSchedule,
 } from "../controllers/agendamento";
-import { verifyRoles } from "../middleware/auth";
+import { verifyRoles, authMiddleware } from "../middleware/auth";
 
 const router = Router();
 
 router
-  .post("/schedule", verifyRoles("Student"), createSchedule)
-  .put("/schedule/:id", verifyRoles("Student"), updateSchedule)
-  .delete("/schedule/:id", verifyRoles("Student"), deleteSchedule);
+  .post("/schedule", authMiddleware, verifyRoles("Student"), createSchedule)
+  .put("/schedule/:id", authMiddleware, verifyRoles("Student"), updateSchedule)
+  .delete(
+    "/schedule/:id",
+    authMiddleware,
+    verifyRoles("Student"),
+    deleteSchedule
+  );
 
 export default router;
