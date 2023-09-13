@@ -14,6 +14,7 @@ jest.mock('../models/instructor', () => ({
     create: jest.fn(),
     find: jest.fn(),
     findOneAndUpdate: jest.fn(),
+    findByIdAndRemove: jest.fn(),
   },
 }));
 
@@ -24,6 +25,7 @@ describe('Instructors tests', () => {
     (InstructorModel.create as jest.Mock).mockClear();
     (InstructorModel.find as jest.Mock).mockClear();
     (InstructorModel.findOneAndUpdate as jest.Mock).mockClear();
+    (InstructorModel.findByIdAndRemove as jest.Mock).mockClear();
   });
 
   afterAll(() => {
@@ -199,7 +201,7 @@ describe('Instructors tests', () => {
     it('should return "There is no instructor with id: {id}" error if there is no instructor with the given id', async () => {
       const req = {
         params: {
-          id: '6501ebfc87d46e3a6861844d',
+          id: '6501ebfc87d46e3a6861844',
         },
       };
 
