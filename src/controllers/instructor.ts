@@ -3,8 +3,21 @@ import { InstrutorModel } from '../models/instrutor';
 import { StatusCodes } from 'http-status-codes';
 
 // Gets all instructors data
-export const getAllInstructors = async (req: Request, res: Response) => {
+export const getAllInstructors = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const Instructors = await InstrutorModel.find({});
+
+  if (Instructors.length === 0) {
+    return next(
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ msg: 'There is none instructors registered' })
+    );
+  }
+
   res.status(StatusCodes.OK).json({ Instructors });
 };
 

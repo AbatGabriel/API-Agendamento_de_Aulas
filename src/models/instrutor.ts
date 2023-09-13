@@ -1,5 +1,5 @@
-import mongoose, { Schema, Document } from "mongoose";
-import * as bcrypt from "bcryptjs";
+import mongoose, { Schema, Document } from 'mongoose';
+import * as bcrypt from 'bcryptjs';
 
 // Instructor interface
 export interface IInstrutor extends Document {
@@ -19,12 +19,12 @@ const InstrutorSchema: Schema = new Schema({
   password: { type: String, required: true },
   especialidades: { type: [String], required: true },
   horariosDisponiveis: { type: [String], required: true },
-  role: { type: String, default: "Instructor" },
+  role: { type: String, default: 'Instructor' },
 });
 
 // pre-saves hashed password in new created instructor document
-InstrutorSchema.pre<IInstrutor>("save", function (next) {
-  if (!this.isModified("password")) {
+InstrutorSchema.pre<IInstrutor>('save', function (next) {
+  if (!this.isModified('password')) {
     return next();
   }
   this.password = bcrypt.hashSync(this.password, 10);
@@ -41,6 +41,6 @@ InstrutorSchema.methods.comparePassword = function (
 };
 
 export const InstrutorModel = mongoose.model<IInstrutor>(
-  "Instrutor",
+  'Instrutor',
   InstrutorSchema
 );
