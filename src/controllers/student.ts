@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { StudentModel } from '../models/aluno';
+import { StudentModel } from '../models/student';
 import { StatusCodes } from 'http-status-codes';
 
 // Gets all students data
@@ -14,9 +14,9 @@ export const createStudent = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { nome, email, password } = req.body;
+  const { name, email, password } = req.body;
 
-  if (!nome || !email || !password) {
+  if (!name || !email || !password) {
     return next(
       res.status(StatusCodes.BAD_REQUEST).json({ msg: 'Missing fields' })
     );
@@ -29,7 +29,7 @@ export const createStudent = async (
     );
   }
   const StudentDocument = await StudentModel.create({
-    nome,
+    name,
     email,
     password,
     role: 'Student',
@@ -54,7 +54,7 @@ export const updateStudent = async (
     );
   }
   if (StudentDocument) {
-    StudentDocument.nome = req.body.nome;
+    StudentDocument.name = req.body.name;
     StudentDocument.email = req.body.email;
     StudentDocument.save();
   }

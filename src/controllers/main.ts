@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { StudentModel } from '../models/aluno';
-import { InstrutorModel } from '../models/instrutor';
+import { StudentModel } from '../models/student';
+import { InstructorModel } from '../models/instructor';
 
 // JWT secret for token generation
 const secret = process.env.JWT_SECRET
@@ -30,10 +30,10 @@ async function loginStudent(req: Request, res: Response) {
   }
 
   const id = student._id;
-  const nome = student.nome;
+  const name = student.name;
   const role = student.role;
 
-  const token = jwt.sign({ id, nome, role }, secret, {
+  const token = jwt.sign({ id, name, role }, secret, {
     expiresIn: '30d',
   });
 
@@ -48,7 +48,7 @@ async function loginInstructor(req: Request, res: Response) {
     throw new Error('Please Provide email and password!');
   }
 
-  const instructor = await InstrutorModel.findOne({ email }).exec();
+  const instructor = await InstructorModel.findOne({ email }).exec();
 
   if (!instructor) {
     throw new Error('Invalid Credentials!');
@@ -61,10 +61,10 @@ async function loginInstructor(req: Request, res: Response) {
   }
 
   const id = instructor._id;
-  const nome = instructor.nome;
+  const name = instructor.name;
   const role = instructor.role;
 
-  const token = jwt.sign({ id, nome, role }, secret, { expiresIn: '30d' });
+  const token = jwt.sign({ id, name, role }, secret, { expiresIn: '30d' });
 
   res
     .status(StatusCodes.OK)

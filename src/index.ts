@@ -1,33 +1,33 @@
-import "dotenv/config";
-require("express-async-errors");
+import 'dotenv/config';
+require('express-async-errors');
 
-import express, { Request, Response } from "express";
-import { connectToDB } from "./db/connect";
+import express, { Request, Response } from 'express';
+import { connectToDB } from './db/connect';
 
-import swaggerUI from "swagger-ui-express";
-import YAML from "yamljs";
+import swaggerUI from 'swagger-ui-express';
+import YAML from 'yamljs';
 
 // Loads swagger docs
-const swaggerDocs = YAML.load("./swagger.yaml");
+const swaggerDocs = YAML.load('./swagger.yaml');
 
 const app = express();
 
 app.use(express.json());
 
 //routers
-import instructorRouter from "./routes/instructor";
-import studentRouter from "./routes/student";
-import scheduleRouter from "./routes/agendamento";
+import instructorRouter from './routes/instructor';
+import studentRouter from './routes/student';
+import scheduleRouter from './routes/scheduling';
 // Swagger docs route
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 //routes
-app.use("/", instructorRouter);
-app.use("/", studentRouter);
-app.use("/", scheduleRouter);
+app.use('/', instructorRouter);
+app.use('/', studentRouter);
+app.use('/', scheduleRouter);
 
-app.get("/", (req: Request, res: Response) => {
-  res.status(200).send("running...");
+app.get('/', (req: Request, res: Response) => {
+  res.status(200).send('running...');
 });
 
 const port = process.env.PORT || 3000;
@@ -38,7 +38,7 @@ const start = async function () {
     if (process.env.MONGO_URI) {
       await connectToDB(process.env.MONGO_URI);
     } else {
-      throw new Error("Invalid URI");
+      throw new Error('Invalid URI');
     }
 
     app.listen(port, () => console.log(`Server is listening to port ${port}`));

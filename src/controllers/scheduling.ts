@@ -1,16 +1,13 @@
-import { StatusCodes } from "http-status-codes";
-import { SchedulingModel } from "../models/agendamento";
-import { InstrutorModel } from "../models/instrutor";
-import { NextFunction, Request, Response } from "express";
-import { Buffer } from "node:buffer";
+import { StatusCodes } from 'http-status-codes';
+import { SchedulingModel } from '../models/scheduling';
+import { InstructorModel } from '../models/instructor';
+import { NextFunction, Request, Response } from 'express';
+import { Buffer } from 'node:buffer';
 
-function verifyHours(
-  horariosDisponiveis: string[],
-  selectedHour: string
-): boolean {
+function verifyHours(availability: string[], selectedHour: string): boolean {
   let avaliability: boolean = false;
-  horariosDisponiveis.forEach((horario: string) => {
-    if (horario !== selectedHour) {
+  availability.forEach((time: string) => {
+    if (time !== selectedHour) {
       avaliability = false;
     }
     avaliability = true;
@@ -18,10 +15,10 @@ function verifyHours(
   return avaliability;
 }
 
-function verifyMateria(especialidades: string[], materia: string) {
+function verifysubject(expertise: string[], subject: string) {
   let avaliability: boolean = false;
-  especialidades.forEach((especialidade: string) => {
-    if (especialidade !== materia) {
+  expertise.forEach((especialidade: string) => {
+    if (especialidade !== subject) {
       avaliability = false;
     }
     avaliability = true;
@@ -34,33 +31,33 @@ function createBufferFromString(sourceFile: string) {
 }
 
 async function createSchedule(req: Request, res: Response, next: NextFunction) {
-  const { id: instructorId, horario, arquivo, materia } = req.body;
-  const instructor = await InstrutorModel.findOne({
+  const { id: instructorId, time, file, subject } = req.body;
+  const instructor = await InstructorModel.findOne({
     _id: instructorId,
   });
 
   if (!instructor) {
-    res.status(StatusCodes.NOT_FOUND).json({ msg: "Not Found instructor!" });
+    res.status(StatusCodes.NOT_FOUND).json({ msg: 'Not Found instructor!' });
     return;
   }
 
   // mock file for test only
-  req.body.arquivo = createBufferFromString(arquivo);
+  req.body.file = createBufferFromString(file);
 
   if (
-    verifyHours(instructor.horariosDisponiveis, horario) &&
-    verifyMateria(instructor.especialidades, materia)
+    verifyHours(instructor.availability, time) &&
+    verifysubject(instructor.expertise, subject)
   ) {
     const schedule = await SchedulingModel.create({ ...req.body });
     res.status(StatusCodes.CREATED).json({ schedule });
   } else {
-    res.json({ msg: "Horário ou Materia Indisponível!" });
+    res.json({ msg: 'Horário ou subject Indisponível!' });
     return;
   }
 }
 
-// encontrar o agendamento pela materia, horario e pelo id do instrutor e aluno
-// verificar se o horario do agendamento foi alterado
+// encontrar o agendamento pela subject, time e pelo id do instructor e student
+// verificar se o time do agendamento foi alterado
 async function updateSchedule(req: Request, res: Response, next: NextFunction) {
   const { id: idSchedule } = req.params;
 
@@ -90,7 +87,7 @@ async function deleteSchedule(req: Request, res: Response, next: NextFunction) {
     res
       .status(StatusCodes.NOT_FOUND)
       .json({ msg: `There is no Schedule with id: ${idSchedule}` });
-    throw new Error("Id not found");
+    throw new Error('Id not found');
   }
 
   res.status(StatusCodes.OK).json({ msg: `Delete Schedule ${idSchedule}` });

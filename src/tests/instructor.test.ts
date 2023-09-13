@@ -1,9 +1,9 @@
 import { createInstructor } from '../controllers/instructor';
-import { InstrutorModel } from '../models/instrutor';
+import { InstructorModel } from '../models/instructor';
 import { Request, Response, NextFunction } from 'express';
 
-jest.mock('../models/instrutor', () => ({
-  InstrutorModel: {
+jest.mock('../models/instructor', () => ({
+  InstructorModel: {
     findOne: jest.fn(),
     create: jest.fn(),
   },
@@ -12,18 +12,18 @@ jest.mock('../models/instrutor', () => ({
 describe('createInstructor', () => {
   beforeEach(() => {
     // Limpa todas as instâncias e chamadas para o mock
-    (InstrutorModel.findOne as jest.Mock).mockClear();
-    (InstrutorModel.create as jest.Mock).mockClear();
+    (InstructorModel.findOne as jest.Mock).mockClear();
+    (InstructorModel.create as jest.Mock).mockClear();
   });
 
   it('should return "Email already exists" error if email is already in use', async () => {
     const req = {
       body: {
-        nome: 'Vinicius',
+        name: 'Vinicius',
         email: 'vinicius2@hotmail.com',
         password: 'secret',
-        especialidades: ['Matéria3'],
-        horariosDisponiveis: ['Sex7'],
+        expertise: ['Matéria3'],
+        availability: ['Sex7'],
       },
     };
 
@@ -34,8 +34,8 @@ describe('createInstructor', () => {
 
     const next = jest.fn();
 
-    // Simula que um instrutor com o email fornecido já existe
-    (InstrutorModel.findOne as jest.Mock).mockResolvedValue({
+    // Simula que um instructor com o email fornecido já existe
+    (InstructorModel.findOne as jest.Mock).mockResolvedValue({
       email: 'viniciuspinha2@hotmail.com',
     });
 
@@ -54,8 +54,8 @@ describe('createInstructor', () => {
       body: {
         email: 'vinicius2@hotmail.com',
         password: 'secret',
-        especialidades: ['Matéria3'],
-        horariosDisponiveis: ['Sex7'],
+        expertise: ['Matéria3'],
+        availability: ['Sex7'],
       },
     };
 

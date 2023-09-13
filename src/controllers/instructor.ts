@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { InstrutorModel } from '../models/instrutor';
+import { InstructorModel } from '../models/instructor';
 import { StatusCodes } from 'http-status-codes';
 import mongoose from 'mongoose';
 
@@ -9,7 +9,7 @@ export const getAllInstructors = async (
   res: Response,
   next: NextFunction
 ) => {
-  const Instructors = await InstrutorModel.find({});
+  const Instructors = await InstructorModel.find({});
 
   if (Instructors.length === 0) {
     return next(
@@ -28,28 +28,28 @@ export const getSingleInstructor = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { id: InstrutorId } = req.params;
+  const { id: InstructorId } = req.params;
 
-  if (!mongoose.isValidObjectId(InstrutorId)) {
+  if (!mongoose.isValidObjectId(InstructorId)) {
     res
       .status(StatusCodes.BAD_REQUEST)
       .json({ msg: 'The user ID is incorrect' });
     return next;
   }
 
-  const Instrutor = await InstrutorModel.findOne({
-    _id: InstrutorId,
+  const Instructor = await InstructorModel.findOne({
+    _id: InstructorId,
   });
 
-  if (!Instrutor) {
+  if (!Instructor) {
     return next(
       res
         .status(StatusCodes.NOT_FOUND)
-        .json({ msg: `There is no instructor with id: ${InstrutorId}` })
+        .json({ msg: `There is no instructor with id: ${InstructorId}` })
     );
   }
 
-  res.status(StatusCodes.OK).json({ Instrutor });
+  res.status(StatusCodes.OK).json({ Instructor });
 };
 
 // Creates new instructor
@@ -58,27 +58,26 @@ export const createInstructor = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { nome, email, password, especialidades, horariosDisponiveis } =
-    req.body;
+  const { name, email, password, expertise, availability } = req.body;
 
-  if (!nome || !email || !password || !especialidades || !horariosDisponiveis) {
+  if (!name || !email || !password || !expertise || !availability) {
     return next(
       res.status(StatusCodes.BAD_REQUEST).json({ msg: 'Missing fields' })
     );
   }
 
-  const emailAlreadyExists = await InstrutorModel.findOne({ email });
+  const emailAlreadyExists = await InstructorModel.findOne({ email });
   if (emailAlreadyExists) {
     return next(
       res.status(StatusCodes.BAD_REQUEST).json({ msg: 'Email already exists' })
     );
   }
-  const Instructor = await InstrutorModel.create({
-    nome,
+  const Instructor = await InstructorModel.create({
+    name,
     email,
     password,
-    especialidades,
-    horariosDisponiveis,
+    expertise,
+    availability,
     role: 'Instructor',
   });
   res.status(StatusCodes.CREATED).send({ Instructor });
@@ -92,7 +91,7 @@ export const updateInstructor = async (
 ) => {
   const { id: InstructorId } = req.params;
 
-  let instructor = await InstrutorModel.findOne({ _id: InstructorId });
+  let instructor = await InstructorModel.findOne({ _id: InstructorId });
   if (!instructor) {
     return next(
       res
@@ -101,7 +100,7 @@ export const updateInstructor = async (
     );
   }
 
-  instructor = await InstrutorModel.findOneAndUpdate(
+  instructor = await InstructorModel.findOneAndUpdate(
     {
       _id: InstructorId,
     },
@@ -121,13 +120,13 @@ export const deleteInstructor = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { id: InstrutorId } = req.params;
-  const Instructor = await InstrutorModel.findByIdAndRemove(InstrutorId);
+  const { id: InstructorId } = req.params;
+  const Instructor = await InstructorModel.findByIdAndRemove(InstructorId);
   if (!Instructor) {
     return next(
       res
         .status(StatusCodes.NOT_FOUND)
-        .json({ msg: `There is no instructor with id: ${InstrutorId}` })
+        .json({ msg: `There is no instructor with id: ${InstructorId}` })
     );
   }
   res.status(StatusCodes.OK).json('Deleted!');

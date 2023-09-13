@@ -20,8 +20,8 @@ async function authMiddleware(
       ? process.env.JWT_SECRET
       : '5c7ee2074b65853f71fc5a01ce194ff26deedf6daacdb715c6beefdfd3f31b35';
 
-    const { id, nome, role }: any = jwt.verify(token, secret);
-    req.user = { id, nome, role };
+    const { id, name, role }: any = jwt.verify(token, secret);
+    req.user = { id, name, role };
     next();
   } catch (error) {
     throw new Error('Not Autorized');
