@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { InstrutorModel } from '../models/instrutor';
 import { StatusCodes } from 'http-status-codes';
+import mongoose from 'mongoose';
 
 // Gets all instructors data
 export const getAllInstructors = async (
@@ -19,6 +20,36 @@ export const getAllInstructors = async (
   }
 
   res.status(StatusCodes.OK).json({ Instructors });
+};
+
+// Get single instructor data
+export const getSingleInstructor = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id: InstrutorId } = req.params;
+
+  if (!mongoose.isValidObjectId(InstrutorId)) {
+    res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: 'The user ID is incorrect' });
+    return next;
+  }
+
+  const Instrutor = await InstrutorModel.findOne({
+    _id: InstrutorId,
+  });
+
+  if (!Instrutor) {
+    return next(
+      res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: `There is no instructor with id: ${InstrutorId}` })
+    );
+  }
+
+  res.status(StatusCodes.OK).json({ Instrutor });
 };
 
 // Creates new instructor

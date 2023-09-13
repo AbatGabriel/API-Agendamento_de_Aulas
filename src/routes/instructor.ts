@@ -1,31 +1,34 @@
-import { Router } from "express";
+import { Router } from 'express';
 const router = Router();
 
 import {
   getAllInstructors,
+  getSingleInstructor,
   createInstructor,
   updateInstructor,
   deleteInstructor,
-} from "../controllers/instructor";
-import { authMiddleware, verifyRoles, verifyUser } from "../middleware/auth";
-import { loginInstructor } from "../controllers/main";
+} from '../controllers/instructor';
+import { authMiddleware, verifyRoles, verifyUser } from '../middleware/auth';
+import { loginInstructor } from '../controllers/main';
 
 // All instructor routes
 
 router
-  .route("/instructors")
-  .get(authMiddleware, verifyRoles("Student"), getAllInstructors);
+  .route('/instructors')
+  .get(authMiddleware, verifyRoles('Student'), getAllInstructors);
 
-router.route("/instructor").post(createInstructor);
+router.route('/instructor/:id').get(getSingleInstructor);
 
-router.route("/instructor/login").post(loginInstructor);
+router.route('/instructor').post(createInstructor);
+
+router.route('/instructor/login').post(loginInstructor);
 
 router
-  .route("/instructor/:id")
+  .route('/instructor/:id')
   .put(authMiddleware, verifyUser, updateInstructor);
 
 router
-  .route("/instructor/:id")
+  .route('/instructor/:id')
   .delete(authMiddleware, verifyUser, deleteInstructor);
 
 export default router;
