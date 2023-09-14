@@ -88,21 +88,29 @@ export const updateStudent = async (
   next: NextFunction
 ) => {
   const { id: StudentId } = req.params;
-  const StudentDocument = await StudentModel.findById(StudentId);
 
-  if (!StudentDocument) {
+  let Student = await StudentModel.findOne({ _id: StudentId });
+
+  if (!Student) {
     return next(
       res
         .status(StatusCodes.NOT_FOUND)
         .json({ msg: `there is no student with id: ${StudentId}` })
     );
   }
-  if (StudentDocument) {
-    StudentDocument.name = req.body.name;
-    StudentDocument.email = req.body.email;
-    StudentDocument.save();
-  }
-  res.status(StatusCodes.OK).json({ StudentDocument });
+
+  Student = await StudentModel.findOneAndUpdate(
+    {
+      _id: StudentId,
+    },
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  res.status(StatusCodes.OK).json({ Student });
 };
 
 // Deletes student data
