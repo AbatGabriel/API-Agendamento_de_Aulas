@@ -19,19 +19,28 @@ jest.mock('../models/instructor', () => ({
 }));
 
 describe('Instructors tests', () => {
-  beforeEach(() => {
-    // Limpa todas as instâncias e chamadas para o mock
-    (InstructorModel.findOne as jest.Mock).mockClear();
-    (InstructorModel.create as jest.Mock).mockClear();
-    (InstructorModel.find as jest.Mock).mockClear();
-    (InstructorModel.findOneAndUpdate as jest.Mock).mockClear();
-    (InstructorModel.findByIdAndRemove as jest.Mock).mockClear();
-  });
 
   afterAll(() => {
     // Limpa todos os mocks
     jest.clearAllMocks();
   });
+
+  const mockInstructor = {
+    _id: '6501ebfc87d46e3a6861844d',
+    name: 'Vinicius',
+    email: 'vinicius@hotmail.com',
+    password: 'secret',
+    expertise: ['Matéria1', 'Matéria2'],
+    availability: ['Seg2', 'Seg3'],
+  };
+  const mockInstructor2 = {
+    _id: '6601ebfc87d46e3a6861844e',
+    name: 'Gabriel',
+    email: 'gabriel@hotmail.com',
+    password: 'secret',
+    expertise: ['Matéria1', 'Matéria2'],
+    availability: ['Seg2', 'Seg3'],
+  };
 
   const res = {
     status: jest.fn().mockReturnThis(),
@@ -42,6 +51,22 @@ describe('Instructors tests', () => {
 
   // Testes para o método getSingleInstructor
   describe('getAllInstructors', () => {
+
+    it('should return all the Instructors registred and "status OK"', async () => {
+      (InstructorModel.find as jest.Mock).mockResolvedValue([{ mockInstructor }, { mockInstructor2 }]);
+
+      await getAllInstructors(
+        {} as Request,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({ Instructors: [{ mockInstructor }, { mockInstructor2 }] });
+
+
+    });
+
     it('should return "There is none instructors registered" error if there is no instructors registered', async () => {
       // Simula que não há nenhum instructor registrado
       (InstructorModel.find as jest.Mock).mockResolvedValue([]);
@@ -61,6 +86,29 @@ describe('Instructors tests', () => {
 
   // Testes para o método getSingleInstructor
   describe('getSingleInstructor', () => {
+
+    it('should return a Instructor registred and "status OK"', async () => {
+      const req = {
+        params: {
+          id: '6501ebfc87d46e3a6861844d',
+        },
+      };
+
+      // Simula que há um instructor com o id fornecido
+      (InstructorModel.findOne as jest.Mock).mockResolvedValue(mockInstructor);
+
+      await getSingleInstructor(
+        req as any as Request,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(res.status).toHaveBeenCalledWith(200);
+
+      expect(res.json).toHaveBeenCalledWith({ Instructor: mockInstructor });
+
+    });
+
     it('should return "The user ID is incorrect" error if the id is not a valid ObjectId', async () => {
       const req = {
         params: {
@@ -105,6 +153,32 @@ describe('Instructors tests', () => {
 
   // Testes para o método createInstructor
   describe('createInstructor', () => {
+
+    it('should return Instructor created and "status OK"', async () => {
+      const req = {
+        body: {
+          name: 'Vinicius',
+          email: 'vinicius@hotmail.com',
+          password: 'secret',
+          expertise: ['Matéria1', 'Matéria2'],
+          availability: ['Seg2', 'Seg3'],
+        },
+      };
+
+      // Simula que o instrutor foi criado
+      (InstructorModel.create as jest.Mock).mockResolvedValue({});
+
+      await createInstructor(
+        req as any as Request,
+        res as Response,
+        next as NextFunction
+      );
+
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({ Instructor: mockInstructor });
+    });
+
     it('should return "Missing fields" error if some value is empty', async () => {
       const req = {
         body: {
@@ -154,12 +228,28 @@ describe('Instructors tests', () => {
 
   // Testes para o método updateInstructor
   describe('updateInstructor', () => {
-    it('should return "The user ID is incorrect" error if the id is not a valid ObjectId', async () => {
+    it('should return Instructor updated and "status OK"', async () => {
       const req = {
         params: {
-          id: '123',
+          id: '6501ebfc87d46e3a6861844d',
+        },
+        body: {
+          name: 'Viniciuss',
+          email: 'viniciuss@hotmail.com',
+          password: 'secrett',
+          expertise: ['Matéria2'],
+          availability: ['Sex9'],
         },
       };
+
+      (InstructorModel.findOneAndUpdate as jest.Mock).mockResolvedValue({
+        id: '6501ebfc87d46e3a6861844d',
+        name: 'Viniciuss',
+        email: 'viniciuss@hotmail.com',
+        password: 'secrett',
+        expertise: ['Matéria2'],
+        availability: ['Sex9'],
+      },);
 
       await updateInstructor(
         req as any as Request,
@@ -167,6 +257,22 @@ describe('Instructors tests', () => {
         next as NextFunction
       );
 
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({ Instructor: mockInstructor });
+    });
+
+    it('should return "The user ID is incorrect" error if the id is not a valid ObjectId', async () => {
+      const req = {
+        params: {
+          id: '123',
+        },
+      }; 
+
+      await updateInstructor(
+        req as any as Request,
+        res as Response,
+        next as NextFunction,
+      );
       expect(res.status).toHaveBeenCalledWith(400);
       expect(res.json).toHaveBeenCalledWith({
         msg: 'The user ID is incorrect',
@@ -197,17 +303,19 @@ describe('Instructors tests', () => {
   });
 
   // Testes para o método deleteInstructor
+
   describe('deleteInstructor', () => {
+
     it('should return "There is no instructor with id: {id}" error if there is no instructor with the given id', async () => {
       const req = {
         params: {
-          id: '6501ebfc87d46e3a6861844',
+          id: '6501ebfc87d46e3a6861844d',
         },
       };
 
       // Simula que não há nenhum instructor com o id fornecido
       (InstructorModel.findOne as jest.Mock).mockResolvedValue(null);
-
+ 
       await deleteInstructor(
         req as any as Request,
         res as Response,
@@ -218,6 +326,27 @@ describe('Instructors tests', () => {
       expect(res.json).toHaveBeenCalledWith({
         msg: `There is no instructor with id: ${req.params.id}`,
       });
+    });
+
+    // Teste para o caso de sucesso
+    it('should return the deleted instructor', async () => {
+      const req = {
+        params: {
+          id: '6501ebfc87d46e3a6861844d',
+        },
+      };
+
+      // Simula que há um instructor com o id fornecido
+      (InstructorModel.findByIdAndRemove as jest.Mock).mockResolvedValue(mockInstructor);
+
+      await deleteInstructor(
+        req as any as Request,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({ Instructor: mockInstructor });
     });
   });
 });

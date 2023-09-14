@@ -80,7 +80,7 @@ export const createInstructor = async (
     availability,
     role: 'Instructor',
   });
-  res.status(StatusCodes.CREATED).send({ Instructor });
+  res.status(StatusCodes.CREATED).json({ Instructor });
 };
 
 // Updates instructor data
