@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from "express";
-import { StudentModel } from "../models/aluno";
-import { StatusCodes } from "http-status-codes";
+import { Request, Response, NextFunction } from 'express';
+import { StudentModel } from '../models/student';
+import { StatusCodes } from 'http-status-codes';
 
 // Gets all students data
 export const getAllStudents = async (req: Request, res: Response) => {
@@ -9,10 +9,30 @@ export const getAllStudents = async (req: Request, res: Response) => {
 };
 
 // Creates new student
-export const createStudent = async (req: Request, res: Response) => {
+export const createStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { name, email, password } = req.body;
+
+  if (!name || !email || !password) {
+    return next(
+      res.status(StatusCodes.BAD_REQUEST).json({ msg: 'Missing fields' })
+    );
+  }
+
+  const emailAlreadyExists = await StudentModel.findOne({ email });
+  if (emailAlreadyExists) {
+    return next(
+      res.status(StatusCodes.BAD_REQUEST).json({ msg: 'Email already exists' })
+    );
+  }
   const StudentDocument = await StudentModel.create({
-    ...req.body,
-    role: "Student",
+    name,
+    email,
+    password,
+    role: 'Student',
   });
   res.status(StatusCodes.CREATED).json({ StudentDocument });
 };
@@ -34,7 +54,7 @@ export const updateStudent = async (
     );
   }
   if (StudentDocument) {
-    StudentDocument.nome = req.body.nome;
+    StudentDocument.name = req.body.name;
     StudentDocument.email = req.body.email;
     StudentDocument.save();
   }
@@ -56,5 +76,5 @@ export const deleteStudent = async (
         .json({ msg: `there is no student with id: ${StudentId}` })
     );
   }
-  res.status(StatusCodes.OK).json("deleted!");
+  res.status(StatusCodes.OK).json('deleted!');
 };

@@ -1,6 +1,6 @@
-import jwt from "jsonwebtoken";
-import { Request, Response, NextFunction } from "express";
-import { StatusCodes } from "http-status-codes";
+import jwt from 'jsonwebtoken';
+import { Request, Response, NextFunction } from 'express';
+import { StatusCodes } from 'http-status-codes';
 
 // Middleware for authentication with JWT token
 async function authMiddleware(
@@ -10,21 +10,21 @@ async function authMiddleware(
 ) {
   const auth = req.headers.authorization;
 
-  if (!auth || !auth.startsWith("Bearer ")) {
-    throw new Error("No Token Provided!");
+  if (!auth || !auth.startsWith('Bearer ')) {
+    throw new Error('No Token Provided!');
   }
 
-  const token: string = auth.split(" ")[1];
+  const token: string = auth.split(' ')[1];
   try {
     const secret = process.env.JWT_SECRET
       ? process.env.JWT_SECRET
-      : "5c7ee2074b65853f71fc5a01ce194ff26deedf6daacdb715c6beefdfd3f31b35";
+      : '5c7ee2074b65853f71fc5a01ce194ff26deedf6daacdb715c6beefdfd3f31b35';
 
-    const { id, nome, role }: any = jwt.verify(token, secret);
-    req.user = { id, nome, role };
+    const { id, name, role }: any = jwt.verify(token, secret);
+    req.user = { id, name, role };
     next();
   } catch (error) {
-    throw new Error("Not Autorized");
+    throw new Error('Not Autorized');
   }
 }
 
@@ -32,8 +32,8 @@ async function authMiddleware(
 function verifyRoles(...roles: string[]) {
   return (req: Request | any, res: Response, next: NextFunction) => {
     if (!roles.includes(req.user.role)) {
-      res.status(StatusCodes.UNAUTHORIZED).json({ msg: "User not authorized" });
-      throw new Error("Unauthorized");
+      res.status(StatusCodes.UNAUTHORIZED).json({ msg: 'User not authorized' });
+      throw new Error('Unauthorized');
     }
     next();
   };
@@ -44,7 +44,9 @@ function verifyUser(req: Request | any, res: Response, next: NextFunction) {
   if (req.user.id === req.params.id) {
     next();
   } else {
-    throw new Error("Outro usuario tentando alterar dados");
+    res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: 'You are not allowed to change other users data' });
   }
 }
 

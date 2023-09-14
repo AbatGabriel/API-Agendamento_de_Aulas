@@ -4,22 +4,9 @@ const config: Config.InitialOptions = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   verbose: true,
-  collectCoverage:true,
-  collectCoverageFrom: [
-    '<rootDir>/src/**/*.ts',
-  ],
-  testMatch:[
-    '<rootDir>src/tests/instructorRoutes.test.ts',
-  ]
-
-}
+  collectCoverage: true,
+  collectCoverageFrom: ['<rootDir>/src/controllers/*.ts'],
+  testMatch: ['<rootDir>src/tests/*.test.ts'],
+};
 
 export default config;
-
-//module.exports = {
-//    preset: 'ts-jest',
-//    testEnvironment: 'node',
-//    verbose: true,
-//    colect
-//  };
-  
