@@ -145,4 +145,71 @@ describe('Students tests', () => {
       });
     });
   });
+
+  // Testes para o método createStudent
+  describe('createStudent', () => {
+    it('should return the Student created and "status OK"', async () => {
+      const req = {
+        body: {
+          name: 'Vinicius',
+          email: 'vinicius@hotmail.com',
+          password: 'secret',
+        },
+      };
+
+      // Simula que o instrutor foi criado
+      (StudentModel.create as jest.Mock).mockResolvedValue({});
+
+      await createStudent(
+        req as any as Request,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({ Student: mockStudent });
+    });
+
+    it('should return "Missing fields" error if some value is empty', async () => {
+      const req = {
+        body: {
+          email: 'vinicius@hotmail.com',
+          password: 'secret',
+        },
+      };
+
+      await createStudent(
+        req as Request,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({ msg: 'Missing fields' });
+    });
+
+    it('should return "Email already exists" error if email is already in use', async () => {
+      const req = {
+        body: {
+          name: 'Vinicius',
+          email: 'vinicius@hotmail.com',
+          password: 'secret',
+        },
+      };
+
+      // Simula que um Student com o email fornecido já existe
+      (StudentModel.findOne as jest.Mock).mockResolvedValue({
+        email: 'viniciuspinha2@hotmail.com',
+      });
+
+      await createStudent(
+        req as Request,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({ msg: 'Email already exists' });
+    });
+  });
 });
