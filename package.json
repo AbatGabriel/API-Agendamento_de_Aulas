@@ -27,7 +27,9 @@
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
+    "@types/express-fileupload": "^1.4.1",
     "bcryptjs": "^2.4.3",
+    "cloudinary": "^1.40.0",
     "concurrently": "^8.2.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

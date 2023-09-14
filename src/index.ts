@@ -1,5 +1,6 @@
 import 'dotenv/config';
 require('express-async-errors');
+import fileUpload from 'express-fileupload';
 
 import express, { Request, Response } from 'express';
 import { connectToDB } from './db/connect';
@@ -11,19 +12,22 @@ import YAML from 'yamljs';
 const swaggerDocs = YAML.load('./swagger.yaml');
 
 const app = express();
-
+app.use(fileUpload({ useTempFiles: true }));
 app.use(express.json());
 
 //routers
 import instructorRouter from './routes/instructor';
 import studentRouter from './routes/student';
+import uploadRouter from './routes/upload';
 import scheduleRouter from './routes/scheduling';
+
 // Swagger docs route
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 //routes
 app.use('/', instructorRouter);
 app.use('/', studentRouter);
+app.use('/', uploadRouter);
 app.use('/', scheduleRouter);
 
 app.get('/', (req: Request, res: Response) => {

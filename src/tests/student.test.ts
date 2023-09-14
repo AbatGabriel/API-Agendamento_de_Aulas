@@ -157,7 +157,7 @@ describe('Students tests', () => {
         },
       };
 
-      // Simula que o instrutor foi criado
+      // Simula que o instructor foi criado
       (StudentModel.create as jest.Mock).mockResolvedValue({});
 
       await createStudent(
