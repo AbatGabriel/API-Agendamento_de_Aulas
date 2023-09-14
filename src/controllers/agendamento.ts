@@ -2,7 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import { SchedulingModel } from "../models/agendamento";
 import { InstrutorModel } from "../models/instrutor";
 import { NextFunction, Request, Response } from "express";
-import { Buffer } from "node:buffer";
+import mongoose from "mongoose";
 
 function verifyHours(
   horariosDisponiveis: string[],
@@ -30,14 +30,15 @@ function verifyMateria(especialidades: string[], materia: string) {
 }
 
 async function createSchedule(req: Request, res: Response, next: NextFunction) {
-  const { id: instructorId, horario, materia } = req.body;
+  const { id: InstructorId, horario, materia } = req.body;
   const instructor = await InstrutorModel.findById({
-    _id: instructorId,
+    _id: InstructorId,
   });
 
   if (!instructor) {
-    res.status(StatusCodes.NOT_FOUND).json({ msg: "Not Found instructor!" });
-    return;
+    return next(
+      res.status(StatusCodes.NOT_FOUND).json({ msg: "Not Found instructor!" })
+    );
   }
   if (
     verifyHours(instructor.horariosDisponiveis, horario) &&
@@ -54,38 +55,75 @@ async function createSchedule(req: Request, res: Response, next: NextFunction) {
 // encontrar o agendamento pela materia, horario e pelo id do instrutor e aluno
 // verificar se o horario do agendamento foi alterado
 async function updateSchedule(req: Request, res: Response, next: NextFunction) {
-  const { id: idSchedule } = req.params;
+  try {
+    const { id: ScheduleId } = req.params;
 
-  const schedule = await SchedulingModel.findOneAndUpdate(
-    { _id: idSchedule },
-    {
-      ...req.body,
+    const scheduleDocument = await SchedulingModel.findById(ScheduleId);
+
+    if (!scheduleDocument) {
+      return next(
+        res
+          .status(StatusCodes.NOT_FOUND)
+          .json({ msg: `There's no schedule with id: ${ScheduleId}` })
+      );
     }
-  );
+    const schedule = await SchedulingModel.findOneAndUpdate(
+      { _id: ScheduleId },
+      {
+        ...req.body,
+      }
+    );
 
-  if (!schedule) {
-    res
-      .status(StatusCodes.NOT_FOUND)
-      .json({ msg: `There is no Schedule found` });
-    return;
+    if (!schedule) {
+      return next(
+        res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ msg: "Failed to update schedule, please try again." })
+      );
+    }
+    res.status(StatusCodes.OK).json({ schedule });
+  } catch (error) {
+    if (error instanceof mongoose.Error.CastError) {
+      return next(
+        res.status(StatusCodes.BAD_REQUEST).json({
+          msg: "Please inform a valid id.",
+        })
+      );
+    }
   }
-  res.status(StatusCodes.OK).json({ schedule });
 }
 
 // encontrar o agendamento
 // deletar  o agendamento
 async function deleteSchedule(req: Request, res: Response, next: NextFunction) {
-  const { id: idSchedule } = req.params;
-  const schedule = await SchedulingModel.findByIdAndDelete(idSchedule);
+  try {
+    const { id: ScheduleId } = req.params;
 
-  if (!schedule) {
-    res
-      .status(StatusCodes.NOT_FOUND)
-      .json({ msg: `There is no Schedule with id: ${idSchedule}` });
-    throw new Error("Id not found");
+    const scheduleDocument = await SchedulingModel.findById(ScheduleId);
+    if (!scheduleDocument) {
+      return next(
+        res
+          .status(StatusCodes.NOT_FOUND)
+          .json({ msg: `There's no schedule with id: ${ScheduleId}` })
+      );
+    }
+
+    const schedule = await SchedulingModel.findByIdAndDelete(ScheduleId);
+    if (!schedule) {
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ msg: "Failed to delete schedule, please try again." });
+    }
+    res.status(StatusCodes.OK).json({ msg: `Delete Schedule ${ScheduleId}` });
+  } catch (error) {
+    if (error instanceof mongoose.Error.CastError) {
+      return next(
+        res.status(StatusCodes.BAD_REQUEST).json({
+          msg: "Please inform a valid id.",
+        })
+      );
+    }
   }
-
-  res.status(StatusCodes.OK).json({ msg: `Delete Schedule ${idSchedule}` });
 }
 
 export { createSchedule, updateSchedule, deleteSchedule };

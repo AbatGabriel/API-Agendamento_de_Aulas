@@ -1,17 +1,47 @@
 import { Request, Response, NextFunction } from "express";
 import { StudentModel } from "../models/aluno";
 import { StatusCodes } from "http-status-codes";
+import mongoose from "mongoose";
 
 // Gets all students data
-export const getAllStudents = async (req: Request, res: Response) => {
+export const getAllStudents = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const StudentsDocument = await StudentModel.find({});
+  if (!StudentsDocument) {
+    return next(
+      res.status(StatusCodes.NOT_FOUND).json({ msg: "No students found." })
+    );
+  }
   res.status(StatusCodes.OK).json({ StudentsDocument });
 };
 
 // Creates new student
-export const createStudent = async (req: Request, res: Response) => {
+export const createStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { nome, email, password } = req.body;
+
+  if (!nome || !email || !password) {
+    return next(
+      res.status(StatusCodes.BAD_REQUEST).json({ msg: "Missing fields" })
+    );
+  }
+
+  const emailAlreadyExists = await StudentModel.findOne({ email });
+  if (emailAlreadyExists) {
+    return next(
+      res.status(StatusCodes.BAD_REQUEST).json({ msg: "Email already exists" })
+    );
+  }
   const StudentDocument = await StudentModel.create({
-    ...req.body,
+    nome,
+    email,
+    password,
     role: "Student",
   });
   res.status(StatusCodes.CREATED).json({ StudentDocument });
@@ -23,22 +53,41 @@ export const updateStudent = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { id: StudentId } = req.params;
-  const StudentDocument = await StudentModel.findById(StudentId);
+  try {
+    const { id: StudentId } = req.params;
 
-  if (!StudentDocument) {
-    return next(
-      res
-        .status(StatusCodes.NOT_FOUND)
-        .json({ msg: `there is no student with id: ${StudentId}` })
+    const StudentDocument = await StudentModel.findById(StudentId);
+    if (!StudentDocument) {
+      return next(
+        res
+          .status(StatusCodes.NOT_FOUND)
+          .json({ msg: `there is no student with id: ${StudentId}` })
+      );
+    }
+
+    const student = await StudentModel.findOneAndUpdate(
+      { _id: StudentId },
+      {
+        ...req.body,
+      }
     );
+    if (!student) {
+      return next(
+        res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ msg: "Failed to update student, please try again." })
+      );
+    }
+    res.status(StatusCodes.OK).json({ StudentDocument });
+  } catch (error) {
+    if (error instanceof mongoose.Error.CastError) {
+      return next(
+        res.status(StatusCodes.BAD_REQUEST).json({
+          msg: "Please inform a valid id.",
+        })
+      );
+    }
   }
-  if (StudentDocument) {
-    StudentDocument.nome = req.body.nome;
-    StudentDocument.email = req.body.email;
-    StudentDocument.save();
-  }
-  res.status(StatusCodes.OK).json({ StudentDocument });
 };
 
 // Deletes student data
@@ -47,14 +96,34 @@ export const deleteStudent = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { id: StudentId } = req.params;
-  const StudentDocument = await StudentModel.findByIdAndRemove(StudentId);
-  if (!StudentDocument) {
-    return next(
-      res
-        .status(StatusCodes.NOT_FOUND)
-        .json({ msg: `there is no student with id: ${StudentId}` })
-    );
+  try {
+    const { id: StudentId } = req.params;
+
+    const StudentDocument = await StudentModel.findById(StudentId);
+    if (!StudentDocument) {
+      return next(
+        res
+          .status(StatusCodes.NOT_FOUND)
+          .json({ msg: `there is no student with id: ${StudentId}` })
+      );
+    }
+
+    const student = await StudentModel.findByIdAndDelete(StudentId);
+    if (!student) {
+      return next(
+        res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ msg: "Failed to delete student, please try again." })
+      );
+    }
+    res.status(StatusCodes.OK).json("deleted!");
+  } catch (error) {
+    if (error instanceof mongoose.Error.CastError) {
+      return next(
+        res.status(StatusCodes.BAD_REQUEST).json({
+          msg: "Please inform a valid id.",
+        })
+      );
+    }
   }
-  res.status(StatusCodes.OK).json("deleted!");
 };
