@@ -212,4 +212,76 @@ describe('Students tests', () => {
       expect(res.json).toHaveBeenCalledWith({ msg: 'Email already exists' });
     });
   });
+
+  // Testes para o método updateStudent
+  describe('updateStudent', () => {
+    it('should return student updated and "status OK"', async () => {
+      const req = {
+        params: {
+          id: '6501ebfc87d46e3a6861844d',
+        },
+        body: {
+          name: 'Viniciuss',
+          email: 'viniciuss@hotmail.com',
+          password: 'secrett',
+        },
+      };
+
+      (StudentModel.findOneAndUpdate as jest.Mock).mockResolvedValue({
+        id: '6501ebfc87d46e3a6861844d',
+        name: 'Vinicius',
+        email: 'vinicius@hotmail.com',
+        password: 'secrett',
+      });
+
+      await updateStudent(
+        req as any as Request,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({ Student: mockStudent });
+    });
+
+    it('should return "The Student ID is incorrect" error if the id is not a valid ObjectId', async () => {
+      const req = {
+        params: {
+          id: '123',
+        },
+      };
+
+      await updateStudent(
+        req as any as Request,
+        res as Response,
+        next as NextFunction
+      );
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        msg: 'The student ID is incorrect',
+      });
+    });
+
+    it('should return "There is no Student with id: {id}" error if there is no Student with the given id', async () => {
+      const req = {
+        params: {
+          id: '6501ebfc87d46e3a6861844d',
+        },
+      };
+
+      // Simula que não há nenhum Student com o id fornecido
+      (StudentModel.findOne as jest.Mock).mockResolvedValue(null);
+
+      await updateStudent(
+        req as any as Request,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.json).toHaveBeenCalledWith({
+        msg: `There is no student with id: ${req.params.id}`,
+      });
+    });
+  });
 });
