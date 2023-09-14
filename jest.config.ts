@@ -6,14 +6,8 @@ const config: Config.InitialOptions = {
   verbose: true,
   collectCoverage: true,
   collectCoverageFrom: ['<rootDir>/src/controllers/*.ts'],
-  testMatch: ['<rootDir>src/tests/instructor.test.ts'],
+  testMatch: ['<rootDir>src/tests/*.test.ts'],
 };
 
 export default config;
 
-//module.exports = {
-//    preset: 'ts-jest',
-//    testEnvironment: 'node',
-//    verbose: true,
-//    colect
-//  };
