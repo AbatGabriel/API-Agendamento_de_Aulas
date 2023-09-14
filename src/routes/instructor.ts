@@ -17,7 +17,9 @@ router
   .route('/instructors')
   .get(authMiddleware, verifyRoles('Student'), getAllInstructors);
 
-router.route('/instructor/:id').get(getSingleInstructor);
+router
+  .route('/instructor/:id')
+  .get(authMiddleware, verifyRoles('Student'), getSingleInstructor);
 
 router.route('/instructor').post(createInstructor);
 

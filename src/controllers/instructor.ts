@@ -33,7 +33,7 @@ export const getSingleInstructor = async (
   if (!mongoose.isValidObjectId(InstructorId)) {
     res
       .status(StatusCodes.BAD_REQUEST)
-      .json({ msg: 'The user ID is incorrect' });
+      .json({ msg: 'The instructor ID is incorrect' });
     return next;
   }
 

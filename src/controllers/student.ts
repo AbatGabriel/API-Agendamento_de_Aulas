@@ -1,11 +1,42 @@
 import { Request, Response, NextFunction } from 'express';
 import { StudentModel } from '../models/student';
 import { StatusCodes } from 'http-status-codes';
+import mongoose from 'mongoose';
 
 // Gets all students data
 export const getAllStudents = async (req: Request, res: Response) => {
   const StudentsDocument = await StudentModel.find({});
   res.status(StatusCodes.OK).json({ StudentsDocument });
+};
+
+// Get single student data
+export const getSingleStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id: StudentId } = req.params;
+
+  if (!mongoose.isValidObjectId(StudentId)) {
+    res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: 'The student ID is incorrect' });
+    return next;
+  }
+
+  const Student = await StudentModel.findOne({
+    _id: StudentId,
+  });
+
+  if (!Student) {
+    return next(
+      res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: `There is no student with id: ${StudentId}` })
+    );
+  }
+
+  res.status(StatusCodes.OK).json({ Student });
 };
 
 // Creates new student
