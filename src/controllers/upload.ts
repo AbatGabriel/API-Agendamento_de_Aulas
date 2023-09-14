@@ -20,9 +20,14 @@ export const uploadFile = async (req: Request, res: Response) => {
 
   const allowedFormats = ["txt", "docx", "pdf"];
   const fileExtension = file.name.split(".").pop();
+  const maxSize = 3000000;
+
+  if (file.size > maxSize) {
+    res.status(400).json({ msg: "Maximum file size exceeded." });
+  }
 
   if (!fileExtension || !allowedFormats.includes(fileExtension)) {
-    return res.status(400).json({ error: "Invalid file format." });
+    res.status(400).json({ error: "Invalid file format." });
   }
 
   const result = await cloudinary.uploader.upload(file.tempFilePath, {
