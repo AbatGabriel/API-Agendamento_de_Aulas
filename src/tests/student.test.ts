@@ -284,4 +284,53 @@ describe('Students tests', () => {
       });
     });
   });
+
+  // Testes para o método deleteStudent
+
+  describe('deleteStudent', () => {
+    it('should return "There is no Student with id: {id}" error if there is no Student with the given id', async () => {
+      const req = {
+        params: {
+          id: '6501ebfc87d46e3a6861844d',
+        },
+      };
+
+      // Simula que não há nenhum Student com o id fornecido
+      (StudentModel.findOne as jest.Mock).mockResolvedValue(null);
+
+      await deleteStudent(
+        req as any as Request,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.json).toHaveBeenCalledWith({
+        msg: `There is no student with id: ${req.params.id}`,
+      });
+    });
+
+    // Teste para o caso de sucesso
+    it('should return the deleted Student', async () => {
+      const req = {
+        params: {
+          id: '6501ebfc87d46e3a6861844d',
+        },
+      };
+
+      // Simula que há um Student com o id fornecido
+      (StudentModel.findByIdAndRemove as jest.Mock).mockResolvedValue(
+        mockStudent
+      );
+
+      await deleteStudent(
+        req as any as Request,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({ Student: mockStudent });
+    });
+  });
 });
