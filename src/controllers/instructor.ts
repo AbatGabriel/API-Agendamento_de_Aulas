@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from "express";
-import { InstrutorModel } from "../models/instrutor";
-import { StatusCodes } from "http-status-codes";
-import mongoose from "mongoose";
+import { Request, Response, NextFunction } from 'express';
+import { instructorModel } from '../models/instructor';
+import { StatusCodes } from 'http-status-codes';
+import mongoose from 'mongoose';
 
 // Gets all instructors data
 export const getAllInstructors = async (
@@ -9,10 +9,10 @@ export const getAllInstructors = async (
   res: Response,
   next: NextFunction
 ) => {
-  const Instructors = await InstrutorModel.find({});
+  const Instructors = await instructorModel.find({});
   if (!Instructors) {
     return next(
-      res.status(StatusCodes.NOT_FOUND).json({ msg: "No instructors found." })
+      res.status(StatusCodes.NOT_FOUND).json({ msg: 'No instructors found.' })
     );
   }
 
@@ -25,29 +25,28 @@ export const createInstructor = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { nome, email, password, especialidades, horariosDisponiveis } =
-    req.body;
+  const { name, email, password, expertise, availability } = req.body;
 
-  if (!nome || !email || !password || !especialidades || !horariosDisponiveis) {
+  if (!name || !email || !password || !expertise || !availability) {
     return next(
-      res.status(StatusCodes.BAD_REQUEST).json({ msg: "Missing fields" })
+      res.status(StatusCodes.BAD_REQUEST).json({ msg: 'Missing fields' })
     );
   }
 
-  const emailAlreadyExists = await InstrutorModel.findOne({ email });
+  const emailAlreadyExists = await instructorModel.findOne({ email });
   if (emailAlreadyExists) {
     return next(
-      res.status(StatusCodes.BAD_REQUEST).json({ msg: "Email already exists" })
+      res.status(StatusCodes.BAD_REQUEST).json({ msg: 'Email already exists' })
     );
   }
 
-  const Instructor = await InstrutorModel.create({
-    nome,
+  const Instructor = await instructorModel.create({
+    name,
     email,
     password,
-    especialidades,
-    horariosDisponiveis,
-    role: "Instructor",
+    expertise,
+    availability,
+    role: 'Instructor',
   });
   res.status(StatusCodes.CREATED).json({ Instructor });
 };
@@ -59,19 +58,19 @@ export const updateInstructor = async (
   next: NextFunction
 ) => {
   try {
-    const { id: InstrutorId } = req.params;
+    const { id: instructorId } = req.params;
 
-    const InstructorDocument = await InstrutorModel.findById(InstrutorId);
+    const InstructorDocument = await instructorModel.findById(instructorId);
     if (!InstructorDocument) {
       return next(
         res
           .status(StatusCodes.NOT_FOUND)
-          .json({ msg: `there is no instructor with id: ${InstrutorId}` })
+          .json({ msg: `there is no instructor with id: ${instructorId}` })
       );
     }
 
-    const instructor = await InstrutorModel.findOneAndUpdate(
-      { _id: InstrutorId },
+    const instructor = await instructorModel.findOneAndUpdate(
+      { _id: instructorId },
       {
         ...req.body,
       }
@@ -80,7 +79,7 @@ export const updateInstructor = async (
       return next(
         res
           .status(StatusCodes.BAD_REQUEST)
-          .json({ msg: "Failed to update instructor, please try again." })
+          .json({ msg: 'Failed to update instructor, please try again.' })
       );
     }
 
@@ -89,7 +88,7 @@ export const updateInstructor = async (
     if (error instanceof mongoose.Error.CastError) {
       return next(
         res.status(StatusCodes.BAD_REQUEST).json({
-          msg: "Please inform a valid id.",
+          msg: 'Please inform a valid id.',
         })
       );
     }
@@ -103,31 +102,31 @@ export const deleteInstructor = async (
   next: NextFunction
 ) => {
   try {
-    const { id: InstrutorId } = req.params;
+    const { id: instructorId } = req.params;
 
-    const InstructorDocument = await InstrutorModel.findById(InstrutorId);
+    const InstructorDocument = await instructorModel.findById(instructorId);
     if (!InstructorDocument) {
       return next(
         res
           .status(StatusCodes.NOT_FOUND)
-          .json({ msg: `there is no instructor with id: ${InstrutorId}` })
+          .json({ msg: `there is no instructor with id: ${instructorId}` })
       );
     }
 
-    const instructor = await InstrutorModel.findByIdAndRemove(InstrutorId);
+    const instructor = await instructorModel.findByIdAndRemove(instructorId);
     if (!instructor) {
       return next(
         res
           .status(StatusCodes.BAD_REQUEST)
-          .json({ msg: "Failed to delete instructor. Please try again." })
+          .json({ msg: 'Failed to delete instructor. Please try again.' })
       );
     }
-    res.status(StatusCodes.OK).json("Deleted!");
+    res.status(StatusCodes.OK).json('Deleted!');
   } catch (error) {
     if (error instanceof mongoose.Error.CastError) {
       return next(
         res.status(StatusCodes.BAD_REQUEST).json({
-          msg: "Please inform a valid id.",
+          msg: 'Please inform a valid id.',
         })
       );
     }

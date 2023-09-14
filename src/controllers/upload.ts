@@ -1,12 +1,12 @@
-import { NextFunction, Request, Response } from "express";
-import { UploadedFile } from "express-fileupload";
-import { SchedulingModel } from "../models/agendamento";
-import fs from "fs";
-import { StatusCodes } from "http-status-codes";
-import mongoose from "mongoose";
+import { NextFunction, Request, Response } from 'express';
+import { UploadedFile } from 'express-fileupload';
+import { SchedulingModel } from '../models/scheduling';
+import fs from 'fs';
+import { StatusCodes } from 'http-status-codes';
+import mongoose from 'mongoose';
 
 //cloudinary settings
-const cloudinary = require("cloudinary").v2;
+const cloudinary = require('cloudinary').v2;
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_API_KEY,
@@ -22,38 +22,38 @@ export const uploadFile = async (
   try {
     if (!req.files || !req.files.file) {
       return next(
-        res.status(StatusCodes.BAD_REQUEST).json({ msg: "No file uplaoded." })
+        res.status(StatusCodes.BAD_REQUEST).json({ msg: 'No file uplaoded.' })
       );
     }
 
     const file = req.files.file as UploadedFile;
 
-    const allowedFormats = ["txt", "docx", "pdf"];
-    const fileExtension = file.name.split(".").pop();
+    const allowedFormats = ['txt', 'docx', 'pdf'];
+    const fileExtension = file.name.split('.').pop();
     const maxSize = 3000000;
 
     if (file.size > maxSize) {
       res
         .status(StatusCodes.BAD_REQUEST)
-        .json({ msg: "Maximum file size exceeded." });
+        .json({ msg: 'Maximum file size exceeded.' });
     }
 
     if (!fileExtension || !allowedFormats.includes(fileExtension)) {
       res
         .status(StatusCodes.BAD_REQUEST)
-        .json({ error: "Invalid file format." });
+        .json({ error: 'Invalid file format.' });
     }
 
     const result = await cloudinary.uploader.upload(file.tempFilePath, {
       use_filename: true,
-      folder: "api-agendamento de aulas",
-      resource_type: "auto",
+      folder: 'api-agendamento de aulas',
+      resource_type: 'auto',
     });
 
     if (!result) {
       return next(
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-          msg: "Something went wrong while uploading the file to cloudinary. Please try again.",
+          msg: 'Something went wrong while uploading the file to cloudinary. Please try again.',
         })
       );
     }
@@ -86,7 +86,7 @@ export const uploadFile = async (
     if (error instanceof mongoose.Error.CastError) {
       return next(
         res.status(StatusCodes.BAD_REQUEST).json({
-          msg: "Please inform a valid id.",
+          msg: 'Please inform a valid id.',
         })
       );
     }
@@ -125,7 +125,7 @@ export const getScheduleUploads = async (
     if (error instanceof mongoose.Error.CastError) {
       return next(
         res.status(StatusCodes.BAD_REQUEST).json({
-          msg: "Please inform a valid id.",
+          msg: 'Please inform a valid id.',
         })
       );
     }
