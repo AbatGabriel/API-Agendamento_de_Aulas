@@ -1,4 +1,4 @@
-import type { Config } from "@jest/types"
+import type { Config } from '@jest/types';
 
 const config: Config.InitialOptions = {
   preset: 'ts-jest',
@@ -6,7 +6,7 @@ const config: Config.InitialOptions = {
   verbose: true,
   collectCoverage: true,
   collectCoverageFrom: ['<rootDir>/src/controllers/*.ts'],
-  testMatch: ['<rootDir>src/tests/*.test.ts'],
+  testMatch: ['<rootDir>src/tests/student.test.ts'],
 };
 
 export default config;

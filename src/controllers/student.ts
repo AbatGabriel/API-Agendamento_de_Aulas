@@ -4,8 +4,21 @@ import { StatusCodes } from 'http-status-codes';
 import mongoose from 'mongoose';
 
 // Gets all students data
-export const getAllStudents = async (req: Request, res: Response) => {
+export const getAllStudents = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const StudentsDocument = await StudentModel.find({});
+
+  if (StudentsDocument.length === 0) {
+    return next(
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ msg: 'There is none student registered' })
+    );
+  }
+
   res.status(StatusCodes.OK).json({ StudentsDocument });
 };
 
