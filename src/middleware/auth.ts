@@ -34,21 +34,22 @@ function verifyRoles(...roles: string[]) {
   return (req: Request | any, res: Response, next: NextFunction) => {
     if (!roles.includes(req.user.role)) {
       res.status(StatusCodes.UNAUTHORIZED).json({ msg: 'User not authorized' });
-      throw new Error('Unauthorized');
     }
     next();
   };
 }
 
 // Verifies if user can has permission for some routes that it's id needs to be the same of params
-async function verifyUser(req: Request | any, res: Response, next: NextFunction) {
+async function verifyUser(
+  req: Request | any,
+  res: Response,
+  next: NextFunction
+) {
   const schedule = await SchedulingModel.findOne({
     _id: req.params.id,
   });
-  if(!schedule) {
-    res
-      .status(StatusCodes.NOT_FOUND)
-      .json({ msg: 'Schedule not found' });
+  if (!schedule) {
+    res.status(StatusCodes.NOT_FOUND).json({ msg: 'Schedule not found' });
     return next;
   }
   if (req.user.id === req.params.id || req.user.id === schedule!.student) {

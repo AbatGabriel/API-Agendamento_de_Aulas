@@ -6,16 +6,15 @@ import mongoose from 'mongoose';
 import { returnUserID } from '../middleware/auth';
 
 function verifyHours(availability: string[], selectedHour: string): boolean {
-  return (availability.includes(selectedHour));
+  return availability.includes(selectedHour);
 }
 
 function verifySubject(expertise: string[], subject: string) {
-  return (expertise.includes(subject));
+  return expertise.includes(subject);
 }
 
 async function createSchedule(req: Request, res: Response, next: NextFunction) {
   const { instructor: instructorID, time, subject } = req.body;
-  const userID = returnUserID(req);
 
   if (!mongoose.isValidObjectId(instructorID)) {
     res
@@ -37,17 +36,27 @@ async function createSchedule(req: Request, res: Response, next: NextFunction) {
     verifyHours(instructor.availability, time) &&
     verifySubject(instructor.expertise, subject)
   ) {
+    await InstructorModel.findByIdAndUpdate(
+      {
+        _id: instructorID,
+      },
+      {
+        availability: instructor.availability.filter(
+          (schedule) => schedule !== time
+        ),
+      }
+    );
 
-    await InstructorModel.findByIdAndUpdate({
-      _id: instructorID,
-    }, {
-      availability: instructor.availability.filter((schedule) => schedule !== time),
-    })
-
-    const schedule = await SchedulingModel.create({ instructor: instructorID, student: userID, time, subject });
+    const userID = returnUserID(req);
+    const schedule = await SchedulingModel.create({
+      instructor: instructorID,
+      student: userID,
+      time,
+      subject,
+    });
     res.status(StatusCodes.CREATED).json({ schedule });
   } else {
-    res.json({ msg: 'Horário ou subject Indisponível!' });
+    res.json({ msg: 'Time or subject unavailable!' });
     return;
   }
 }
@@ -58,7 +67,7 @@ async function updateSchedule(req: Request, res: Response, next: NextFunction) {
   try {
     const { id: ScheduleId } = req.params;
     const { time: newtime, subject } = req.body;
-    if(!newtime && !subject) {
+    if (!newtime && !subject) {
       res.status(StatusCodes.BAD_REQUEST).json({ msg: 'Missing fields' });
       return next;
     }
@@ -71,22 +80,29 @@ async function updateSchedule(req: Request, res: Response, next: NextFunction) {
           .json({ msg: `There's no schedule with id: ${ScheduleId}` })
       );
     }
-    
-    if(scheduleDocument) {
-      const instructor = await InstructorModel.findById(scheduleDocument.instructor);
-      if(instructor) {
+
+    if (scheduleDocument) {
+      const instructor = await InstructorModel.findById(
+        scheduleDocument.instructor
+      );
+      if (instructor) {
         if (
           verifyHours(instructor.availability, newtime) ||
           verifySubject(instructor.expertise, subject)
         ) {
-          let remainingTimes = instructor!.availability.filter((schedule) => schedule !== newtime);
+          let remainingTimes = instructor!.availability.filter(
+            (schedule) => schedule !== newtime
+          );
           remainingTimes.push(scheduleDocument.time);
 
-          await InstructorModel.findByIdAndUpdate({
-            _id: instructor._id,
-          }, {
-            availability: remainingTimes,
-          })
+          await InstructorModel.findByIdAndUpdate(
+            {
+              _id: instructor._id,
+            },
+            {
+              availability: remainingTimes,
+            }
+          );
 
           scheduleDocument = await SchedulingModel.findOneAndUpdate(
             { _id: ScheduleId },
@@ -97,13 +113,17 @@ async function updateSchedule(req: Request, res: Response, next: NextFunction) {
           );
         } else {
           return next(
-            res.status(StatusCodes.BAD_REQUEST).json({ msg: 'New time or subject unavailable!' })
-          )
+            res
+              .status(StatusCodes.BAD_REQUEST)
+              .json({ msg: 'New time or subject unavailable!' })
+          );
         }
       } else {
         return next(
-          res.status(StatusCodes.NOT_FOUND).json({ msg: 'Not Found instructor!' })
-        )
+          res
+            .status(StatusCodes.NOT_FOUND)
+            .json({ msg: 'Not Found instructor!' })
+        );
       }
     }
     scheduleDocument = await SchedulingModel.findById(ScheduleId);
@@ -146,7 +166,7 @@ async function deleteSchedule(req: Request, res: Response, next: NextFunction) {
         .status(StatusCodes.BAD_REQUEST)
         .json({ msg: 'Failed to delete schedule, please try again.' });
     }
-    res.status(StatusCodes.OK).json({ msg: `Delete Schedule ${ScheduleId}` });
+    res.status(StatusCodes.OK).json({ msg: `Deleted Schedule ${ScheduleId}` });
   } catch (error) {
     if (error instanceof mongoose.Error.CastError) {
       return next(

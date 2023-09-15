@@ -18,6 +18,7 @@ jest.mock('../models/instructor', () => ({
   },
 }));
 
+// Instructor tests
 describe('Instructors tests', () => {
   beforeAll(() => {
     jest.clearAllMocks();
@@ -51,7 +52,7 @@ describe('Instructors tests', () => {
 
   const next = jest.fn();
 
-  // Testes para o método getSingleInstructor
+  // getSingleInstructor Test
   describe('getAllInstructors', () => {
     it('should return all the Instructors registred and "status OK"', async () => {
       (InstructorModel.find as jest.Mock).mockResolvedValue([
