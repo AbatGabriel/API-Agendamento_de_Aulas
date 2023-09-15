@@ -18,7 +18,7 @@ async function authMiddleware(
   try {
     const secret = process.env.JWT_SECRET
       ? process.env.JWT_SECRET
-      : '5c7ee2074b65853f71fc5a01ce194ff26deedf6daacdb715c6beefdfd3f31b35';
+: '5c7ee2074b65853f71fc5a01ce194ff26deedf6daacdb715c6beefdfd3f31b35';
 
     const { id, name, role }: any = jwt.verify(token, secret);
     req.user = { id, name, role };
