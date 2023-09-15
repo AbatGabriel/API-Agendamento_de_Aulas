@@ -1,0 +1,531 @@
+{
+	"info": {
+		"_postman_id": "824a9aaa-882e-49f5-8862-3b60a667006b",
+		"name": "API-Agendamento de aulas",
+		"description": "Essa API consiste em um backend para a administração de agendamento de aulas de alunos com instrutores. A partir dessa aplicação, é possível cadastrar dados de alunos e instrutores, edita-los e deleta-los, além de permitir o upload de documentos(txt, docx e pdf) e associá-los a agendamentos existentes.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28633710"
+	},
+	"item": [
+		{
+			"name": "Instrutor",
+			"item": [
+				{
+					"name": "listar todos os instrutores",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWQxZTE5OWE4Njc1ODVhNmMxNWQzNiIsIm5vbWUiOiJhIiwicm9sZSI6IlN0dWRlbnQiLCJpYXQiOjE2OTMyNjI4OTQsImV4cCI6MTY5NTg1NDg5NH0.wysHhM5-g4TR7FrmmTp-zrVMzPrXDe_zefpOyPQsx4Q",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:3000/instructors?Authorization=Bearer ",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"instructors"
+							],
+							"query": [
+								{
+									"key": "Authorization",
+									"value": "Bearer "
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cadastrar instrutor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\":\"\",\r\n    \"email\":\"\",\r\n    \"password\":\"\",\r\n    \"especialidades\":[\"\", \"\",\"\"],\r\n    \"horariosDisponiveis\":[\"\",\"\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/instructor",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"instructor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "atualizar instrutor",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\":\"\",\r\n    \"email\":\"\",\r\n    \"password\":\"\",\r\n    \"especialidades\":[\"\",\"\"],\r\n    \"horariosDisponiveis\":[\"\",\"\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/instructor/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"instructor",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "excluir instrutor",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/instructor/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"instructor",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Pasta contendo todas as rotas relacionadas aos instrutores."
+		},
+		{
+			"name": "Aluno",
+			"item": [
+				{
+					"name": "listar todos os alunos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/students?Authorization=Bearer ",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"students"
+							],
+							"query": [
+								{
+									"key": "Authorization",
+									"value": "Bearer "
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "criar aluno",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\":\"\",\r\n    \"email\":\"\",\r\n    \"password\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/student",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"student"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "atualizar estudante",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\":\"\",\r\n    \"email\":\"\",\r\n    \"password\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/student/:id?Authorization=Bearer ",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"student",
+								":id"
+							],
+							"query": [
+								{
+									"key": "Authorization",
+									"value": "Bearer "
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "excluir aluno",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/student/:id?Authorization=Bearer ",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"student",
+								":id"
+							],
+							"query": [
+								{
+									"key": "Authorization",
+									"value": "Bearer "
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Pasta contendo todas as rotas relacionadas aos alunos."
+		},
+		{
+			"name": "Autenticação",
+			"item": [
+				{
+					"name": "login instrutor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"\",\r\n    \"password\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/instructor/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"instructor",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login aluno",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"\",\r\n    \"password\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/student/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"student",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Pasta contendo todas as rotas relacionadas à autenticação."
+		},
+		{
+			"name": "Agendamento",
+			"item": [
+				{
+					"name": "criar agendamento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"instrutor\":\"\",\r\n    \"aluno\":\"\",\r\n    \"horario\":\"\",\r\n    \"materia\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/schedule?Authorization=Bearer ",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"schedule"
+							],
+							"query": [
+								{
+									"key": "Authorization",
+									"value": "Bearer "
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "atualizar agendamento",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"instrutor\":\"\",\r\n    \"aluno\":\"\",\r\n    \"horario\":\"\",\r\n    \"materia\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/schedule/:id?Authorization=Bearer ",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"schedule",
+								":id"
+							],
+							"query": [
+								{
+									"key": "Authorization",
+									"value": "Bearer "
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "excluir agendamento",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/schedule/:id?Authorization=Bearer ",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"schedule",
+								":id"
+							],
+							"query": [
+								{
+									"key": "Authorization",
+									"value": "Bearer "
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Pasta contendo todas as rotas relacionadas ao agendamento de aulas."
+		},
+		{
+			"name": "Upload",
+			"item": [
+				{
+					"name": "fazer upload de arquivo em um agendamento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/schedule/:id/upload?Authorization=Bearer ",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"schedule",
+								":id",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "Authorization",
+									"value": "Bearer "
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar todos os uploads de um agendamento",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/schedule/:id/uploads?Authorization=Bearer ",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"schedule",
+								":id",
+								"uploads"
+							],
+							"query": [
+								{
+									"key": "Authorization",
+									"value": "Bearer "
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Pasta contendo todas as rotas relacionadas ao upload de arquivos.\n\n**Tipos de arquivos aceitos:** txt, docx, pdf."
+		}
+	]
+}
