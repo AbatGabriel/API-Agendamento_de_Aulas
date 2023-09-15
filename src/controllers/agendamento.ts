@@ -33,6 +33,15 @@ function createBufferFromString(sourceFile: string) {
   return Buffer.from(sourceFile);
 }
 
+async function getAllSchedules(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const schedules = await SchedulingModel.find({});
+  res.status(StatusCodes.OK).json({ schedules });
+}
+
 async function createSchedule(req: Request, res: Response, next: NextFunction) {
   const { id: instructorId, horario, arquivo, materia } = req.body;
   const instructor = await InstrutorModel.findOne({
@@ -96,4 +105,4 @@ async function deleteSchedule(req: Request, res: Response, next: NextFunction) {
   res.status(StatusCodes.OK).json({ msg: `Delete Schedule ${idSchedule}` });
 }
 
-export { createSchedule, updateSchedule, deleteSchedule };
+export { createSchedule, updateSchedule, deleteSchedule, getAllSchedules };
