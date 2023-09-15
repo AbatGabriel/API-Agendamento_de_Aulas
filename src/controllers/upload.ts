@@ -75,7 +75,7 @@ export const uploadFile = async (
       );
     }
 
-    scheduling.arquivos.push(result.secure_url);
+    scheduling.files.push(result.secure_url);
 
     await scheduling.save();
 
@@ -111,7 +111,7 @@ export const getScheduleUploads = async (
       );
     }
 
-    const uploads = scheduling.arquivos;
+    const uploads = scheduling.files;
 
     if (!uploads) {
       return next(

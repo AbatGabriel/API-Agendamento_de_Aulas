@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import { SchedulingModel } from '../models/scheduling';
 
 // Middleware for authentication with JWT token
 async function authMiddleware(
@@ -40,8 +41,17 @@ function verifyRoles(...roles: string[]) {
 }
 
 // Verifies if user can has permission for some routes that it's id needs to be the same of params
-function verifyUser(req: Request | any, res: Response, next: NextFunction) {
-  if (req.user.id === req.params.id) {
+async function verifyUser(req: Request | any, res: Response, next: NextFunction) {
+  const schedule = await SchedulingModel.findOne({
+    _id: req.params.id,
+  });
+  if(!schedule) {
+    res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ msg: 'Schedule not found' });
+    return next;
+  }
+  if (req.user.id === req.params.id || req.user.id === schedule!.student) {
     next();
   } else {
     res
@@ -50,4 +60,12 @@ function verifyUser(req: Request | any, res: Response, next: NextFunction) {
   }
 }
 
-export { authMiddleware, verifyRoles, verifyUser };
+function returnUserID(req: Request | any) {
+  if (req.user.id) {
+    return req.user.id;
+  } else {
+    throw new Error('User not found');
+  }
+}
+
+export { authMiddleware, verifyRoles, verifyUser, returnUserID };
