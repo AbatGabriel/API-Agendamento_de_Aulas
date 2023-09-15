@@ -5,8 +5,11 @@ const config: Config.InitialOptions = {
   testEnvironment: 'node',
   verbose: true,
   collectCoverage: true,
-  collectCoverageFrom: ['<rootDir>/src/controllers/*.ts'],
-  testMatch: ['<rootDir>src/tests/main.test.ts'],
+  collectCoverageFrom: [
+    '<rootDir>/src/controllers/**.ts',
+    '<rootDir>/src/middleware/**.ts'
+  ],
+  testMatch: ['<rootDir>src/tests/auth.test.ts'],
 };
 
 export default config;

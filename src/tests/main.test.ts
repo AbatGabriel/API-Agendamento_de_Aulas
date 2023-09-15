@@ -82,10 +82,6 @@ describe('main tests', () => {
         });
     });
 
-    jest.mock('jsonwebtoken', () => ({
-        sign: jest.fn().mockReturnValue('mockedToken'),
-    }));
-
 
     const mockResponse = {
         status: jest.fn().mockReturnThis(),
@@ -112,7 +108,6 @@ describe('main tests', () => {
                 password: 'mockedpassword',
             },
         };
-
 
 
         it('should return a token and status 200 if login is successful', async () => {

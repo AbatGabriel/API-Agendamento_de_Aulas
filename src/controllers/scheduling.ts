@@ -73,7 +73,6 @@ async function updateSchedule(req: Request, res: Response, next: NextFunction) {
         ...req.body,
       }
     );
-
     if (!schedule) {
       return next(
         res

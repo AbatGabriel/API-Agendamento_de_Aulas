@@ -26,7 +26,7 @@ async function authMiddleware(
   } catch (error) {
     throw new Error('Not Autorized');
   }
-}
+};
 
 // Verify roles of user for route authorization
 function verifyRoles(...roles: string[]) {
