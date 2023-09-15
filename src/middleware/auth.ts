@@ -34,6 +34,7 @@ function verifyRoles(...roles: string[]) {
   return (req: Request | any, res: Response, next: NextFunction) => {
     if (!roles.includes(req.user.role)) {
       res.status(StatusCodes.UNAUTHORIZED).json({ msg: 'User not authorized' });
+      throw new Error('Unauthorized');
     }
     next();
   };

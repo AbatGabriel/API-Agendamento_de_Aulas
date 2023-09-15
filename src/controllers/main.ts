@@ -39,7 +39,6 @@ async function loginStudent(req: Request, res: Response) {
 
   res.status(StatusCodes.OK).json({ msg: 'User confirmed and logged!', token });
 }
-
 // Logs instructor in and returns it's JWT token
 async function loginInstructor(req: Request, res: Response) {
   const { email, password } = req.body;
