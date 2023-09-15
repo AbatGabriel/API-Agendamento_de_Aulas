@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {
+  getAllSchedules,
   createSchedule,
   updateSchedule,
   deleteSchedule,
@@ -7,9 +8,22 @@ import {
 import { authMiddleware, verifyRoles, verifyUser } from '../middleware/auth';
 const router = Router();
 
+router.route('/schedules').get(getAllSchedules);
 router
-  .post('/schedule', authMiddleware, verifyRoles("Student"), createSchedule)
-  .put('/schedule/:id', authMiddleware, verifyUser, verifyRoles("Student"), updateSchedule)
-  .delete('/schedule/:id', authMiddleware, verifyUser,  verifyRoles("Student"), deleteSchedule);
+  .post('/schedule', authMiddleware, verifyRoles('Student'), createSchedule)
+  .put(
+    '/schedule/:id',
+    authMiddleware,
+    verifyUser,
+    verifyRoles('Student'),
+    updateSchedule
+  )
+  .delete(
+    '/schedule/:id',
+    authMiddleware,
+    verifyUser,
+    verifyRoles('Student'),
+    deleteSchedule
+  );
 
 export default router;

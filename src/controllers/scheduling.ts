@@ -13,6 +13,15 @@ function verifySubject(expertise: string[], subject: string) {
   return expertise.includes(subject);
 }
 
+async function getAllSchedules(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const schedules = await SchedulingModel.find({});
+  res.status(StatusCodes.OK).json({ schedules });
+}
+
 async function createSchedule(req: Request, res: Response, next: NextFunction) {
   const { instructor: instructorID, time, subject } = req.body;
 
@@ -178,4 +187,4 @@ async function deleteSchedule(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export { createSchedule, updateSchedule, deleteSchedule };
+export { createSchedule, updateSchedule, deleteSchedule, getAllSchedules };
