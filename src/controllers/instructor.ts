@@ -73,6 +73,10 @@ export const createInstructor = async (
     );
   }
   const Instructor = await InstructorModel.create({
+    name,
+    email,
+    password,
+    expertise,
     availability,
     role: 'Instructor',
   });

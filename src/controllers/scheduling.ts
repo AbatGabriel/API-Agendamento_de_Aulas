@@ -9,8 +9,9 @@ function verifyHours(availability: string[], selectedHour: string): boolean {
   availability.forEach((horario: string) => {
     if (horario !== selectedHour) {
       avaliability = false;
+    } else {
+      avaliability = true;
     }
-    avaliability = true;
   });
   return avaliability;
 }
@@ -20,8 +21,9 @@ function verifyMateria(expertise: string[], materia: string) {
   expertise.forEach((especialidade: string) => {
     if (especialidade !== materia) {
       avaliability = false;
+    } else {
+      avaliability = true;
     }
-    avaliability = true;
   });
   return avaliability;
 }
@@ -31,6 +33,7 @@ async function createSchedule(req: Request, res: Response, next: NextFunction) {
   const instructor = await InstructorModel.findById({
     _id: InstructorId,
   });
+
 
   if (!instructor) {
     return next(
