@@ -22,7 +22,7 @@ export const uploadFile = async (
   try {
     if (!req.files || !req.files.file) {
       return next(
-        res.status(StatusCodes.BAD_REQUEST).json({ msg: 'No file uplaoded.' })
+        res.status(StatusCodes.BAD_REQUEST).json({ msg: 'No file uploaded.' })
       );
     }
 
@@ -75,7 +75,7 @@ export const uploadFile = async (
       );
     }
 
-    scheduling.arquivos.push(result.secure_url);
+    scheduling.files.push(result.secure_url);
 
     await scheduling.save();
 
@@ -111,7 +111,7 @@ export const getScheduleUploads = async (
       );
     }
 
-    const uploads = scheduling.arquivos;
+    const uploads = scheduling.files;
 
     if (!uploads) {
       return next(

@@ -7,9 +7,9 @@ const config: Config.InitialOptions = {
   collectCoverage: true,
   collectCoverageFrom: [
     '<rootDir>/src/controllers/**.ts',
-    '<rootDir>/src/middleware/**.ts'
+    '<rootDir>/src/middleware/**.ts',
   ],
-  testMatch: ['<rootDir>src/tests/auth.test.ts'],
+  testMatch: ['<rootDir>src/tests/**.test.ts'],
 };
 
 export default config;
