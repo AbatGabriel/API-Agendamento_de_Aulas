@@ -1,17 +1,10 @@
-import { StatusCodes } from 'http-status-codes';
-import { SchedulingModel } from '../models/scheduling';
-import { InstructorModel } from '../models/instructor';
-import { NextFunction, Request, Response } from 'express';
-import mongoose from 'mongoose';
-import { returnUserID } from '../middleware/auth';
-
-function verifyHours(availability: string[], selectedHour: string): boolean {
-  return availability.includes(selectedHour);
-}
-
-function verifySubject(expertise: string[], subject: string) {
-  return expertise.includes(subject);
-}
+import { StatusCodes } from "http-status-codes";
+import { SchedulingModel } from "../models/scheduling";
+import { InstructorModel } from "../models/instructor";
+import { NextFunction, Request, Response } from "express";
+import mongoose from "mongoose";
+import { returnUserID } from "../middleware/auth";
+import { arrayStringCompare } from "../utils/verify";
 
 async function getAllSchedules(
   req: Request,
@@ -28,7 +21,7 @@ async function createSchedule(req: Request, res: Response, next: NextFunction) {
   if (!mongoose.isValidObjectId(instructorID)) {
     res
       .status(StatusCodes.BAD_REQUEST)
-      .json({ msg: 'The instructor ID is incorrect' });
+      .json({ msg: "The instructor ID is incorrect" });
     return next;
   }
 
@@ -37,13 +30,13 @@ async function createSchedule(req: Request, res: Response, next: NextFunction) {
   });
   if (!instructor) {
     return next(
-      res.status(StatusCodes.NOT_FOUND).json({ msg: 'Not Found instructor!' })
+      res.status(StatusCodes.NOT_FOUND).json({ msg: "Not Found instructor!" })
     );
   }
 
   if (
-    verifyHours(instructor.availability, time) &&
-    verifySubject(instructor.expertise, subject)
+    arrayStringCompare(instructor.availability, time) &&
+    arrayStringCompare(instructor.expertise, subject)
   ) {
     await InstructorModel.findByIdAndUpdate(
       {
@@ -65,7 +58,7 @@ async function createSchedule(req: Request, res: Response, next: NextFunction) {
     });
     res.status(StatusCodes.CREATED).json({ schedule });
   } else {
-    res.json({ msg: 'Time or subject unavailable!' });
+    res.json({ msg: "Time or subject unavailable!" });
     return;
   }
 }
@@ -77,7 +70,7 @@ async function updateSchedule(req: Request, res: Response, next: NextFunction) {
     const { id: ScheduleId } = req.params;
     const { time: newtime, subject } = req.body;
     if (!newtime && !subject) {
-      res.status(StatusCodes.BAD_REQUEST).json({ msg: 'Missing fields' });
+      res.status(StatusCodes.BAD_REQUEST).json({ msg: "Missing fields" });
       return next;
     }
 
@@ -96,8 +89,8 @@ async function updateSchedule(req: Request, res: Response, next: NextFunction) {
       );
       if (instructor) {
         if (
-          verifyHours(instructor.availability, newtime) ||
-          verifySubject(instructor.expertise, subject)
+          arrayStringCompare(instructor.availability, newtime) ||
+          arrayStringCompare(instructor.expertise, subject)
         ) {
           let remainingTimes = instructor!.availability.filter(
             (schedule) => schedule !== newtime
@@ -124,14 +117,14 @@ async function updateSchedule(req: Request, res: Response, next: NextFunction) {
           return next(
             res
               .status(StatusCodes.BAD_REQUEST)
-              .json({ msg: 'New time or subject unavailable!' })
+              .json({ msg: "New time or subject unavailable!" })
           );
         }
       } else {
         return next(
           res
             .status(StatusCodes.NOT_FOUND)
-            .json({ msg: 'Not Found instructor!' })
+            .json({ msg: "Not Found instructor!" })
         );
       }
     }
@@ -141,13 +134,13 @@ async function updateSchedule(req: Request, res: Response, next: NextFunction) {
     if (error instanceof mongoose.Error.CastError) {
       return next(
         res.status(StatusCodes.BAD_REQUEST).json({
-          msg: 'Please inform a valid id.',
+          msg: "Please inform a valid id.",
         })
       );
     } else {
       return next(
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-          msg: 'Internal Server Error.',
+          msg: "Internal Server Error.",
         })
       );
     }
@@ -173,14 +166,14 @@ async function deleteSchedule(req: Request, res: Response, next: NextFunction) {
     if (!schedule) {
       res
         .status(StatusCodes.BAD_REQUEST)
-        .json({ msg: 'Failed to delete schedule, please try again.' });
+        .json({ msg: "Failed to delete schedule, please try again." });
     }
     res.status(StatusCodes.OK).json({ msg: `Deleted Schedule ${ScheduleId}` });
   } catch (error) {
     if (error instanceof mongoose.Error.CastError) {
       return next(
         res.status(StatusCodes.BAD_REQUEST).json({
-          msg: 'Please inform a valid id.',
+          msg: "Please inform a valid id.",
         })
       );
     }
