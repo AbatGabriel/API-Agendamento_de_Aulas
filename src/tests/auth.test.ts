@@ -182,6 +182,20 @@ describe('auth tests', () => {
       expect(next).toHaveBeenCalled();
     });
 
+    it('should return bad request error if user id is not valid', async () => {
+      if (!req.params) {
+        throw new Error('params not found');
+      }
+      req.params.id = '6503bfce5083f1a736205ba';
+
+      await verifyUser(req as Request, res as Response, next);
+
+      expect(res.status).toBeCalledWith(400);
+      expect(res.json).toBeCalledWith({
+        msg: 'The instructor ID is incorrect',
+      });
+    });
+
     it("Should return 'Schedule not found' if schedule is not found", async () => {
       if (!req.params) {
         throw new Error('params not found');
