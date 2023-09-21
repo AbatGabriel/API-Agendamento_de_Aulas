@@ -31,10 +31,11 @@ export const getSingleInstructor = async (
   const { id: InstructorId } = req.params;
 
   if (!mongoose.isValidObjectId(InstructorId)) {
-    res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ msg: 'The instructor ID is incorrect' });
-    return next;
+    return next(
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ msg: 'The instructor ID is incorrect' })
+    );
   }
 
   const Instructor = await InstructorModel.findOne({

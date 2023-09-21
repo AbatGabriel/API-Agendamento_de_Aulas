@@ -22,7 +22,7 @@ export const uploadFile = async (
   try {
     if (!req.files || !req.files.file) {
       return next(
-        res.status(StatusCodes.BAD_REQUEST).json({ msg: 'No file uplaoded.' })
+        res.status(StatusCodes.BAD_REQUEST).json({ msg: 'No file uploaded.' })
       );
     }
 

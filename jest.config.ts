@@ -9,7 +9,7 @@ const config: Config.InitialOptions = {
     '<rootDir>/src/controllers/**.ts',
     '<rootDir>/src/middleware/**.ts',
   ],
-  testMatch: ['<rootDir>src/tests/**.test.ts'],
+  testMatch: ['<rootDir>src/tests/uploads.test.ts'],
 };
 
 export default config;

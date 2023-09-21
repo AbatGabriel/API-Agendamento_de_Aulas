@@ -7,7 +7,7 @@ interface IScheduling extends Document {
   student: string;
   time: string;
   subject: string;
-  files: string;
+  files: string[];
 }
 
 // Scheduling mongoDB Schema
@@ -16,7 +16,7 @@ const SchedulingSchema: Schema = new Schema<IScheduling>({
   student: { type: String, required: true },
   time: { type: String, required: true },
   subject: { type: String, required: true },
-  files: { type: String },
+  files: { type: [String] },
 });
 
 export const SchedulingModel = mongoose.model<IScheduling>(

@@ -19,6 +19,13 @@ async function getAllSchedules(
   next: NextFunction
 ) {
   const schedules = await SchedulingModel.find({});
+  if (schedules.length === 0) {
+    return next(
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ msg: 'There is no schedules registered' })
+    );
+  }
   res.status(StatusCodes.OK).json({ schedules });
 }
 

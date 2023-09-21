@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { SchedulingModel } from '../models/scheduling';
+import mongoose from 'mongoose';
 
 // Middleware for authentication with JWT token
 async function authMiddleware(
@@ -46,6 +47,15 @@ async function verifyUser(
   res: Response,
   next: NextFunction
 ) {
+  const { id: InstructorId } = req.params;
+  if (!mongoose.isValidObjectId(InstructorId)) {
+    return next(
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ msg: 'The instructor ID is incorrect' })
+    );
+  }
+
   const schedule = await SchedulingModel.findOne({
     _id: req.params.id,
   });
