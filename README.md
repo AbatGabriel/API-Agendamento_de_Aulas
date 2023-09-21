@@ -84,19 +84,11 @@ Após a autenticação ser feita com sucesso, será enviado como resposta uma me
 
 ### Rota GET/students
 
-A requisição para essa rota retornará os dados de todos os alunos cadastrados em formato JSON. Para que seja feita essa requisição, deve ser passado o valor do token JWT no Header "authorization" da aplicação no seguinte formato:
-
-```
-Bearer <valor-do-token>
-```
+A requisição para essa rota retornará os dados de todos os alunos criados em formato JSON. Para que seja feita essa requisição, deve ser passado o valor do Bearer Token em "Authorization".
 
 ### Rota PUT/student/:id
 
-A requisição para essa rota fará a atualização dos dados do aluno logado. Para que essa requisição seja feita, é necessário, primeiramente, passar o valor do token JWT do aluno logado no Header "authorization" da aplicação no seguinte formato:
-
-```
-Bearer <valor-do-token>
-```
+A requisição para essa rota atualizará os dados do aluno que tiver seu id informado. Para que seja feita essa requisição, deve ser informado o id do aluno a ser atualizado e o valor do Bearer Token em "Authorization".
 
 Após isso, devem ser fornecidos os dados a serem atualizados no corpo da requisição em formato JSON, sendo os campos possíveis de serem atualizados os seguintes:
 
@@ -111,11 +103,7 @@ Após isso, será retornado, em formato JSON, os dados do aluno já atualizados.
 
 ### Rota DELETE/student/:id
 
-A requisição para essa rota deletará todos os dados do aluno logado. Para que essa requisição seja feita, é necessário passar o valor do token JWT do aluno logado no Header "authorization" da aplicação no seguinte formato:
-
-```
-Bearer <valor-do-token>
-```
+A requisição para essa rota deletará os dados do aluno que tiver seu id informao. Para que seja feita essa requisição, deve ser informado o id do aluno a ser deletado e o valor do Bearer Token em "Authorization".
 
 ## Instructors Routes
 
@@ -150,19 +138,11 @@ Após a autenticação ser feita com sucesso, será enviado como resposta uma me
 
 ### Rota GET/instructors
 
-A requisição para essa rota retornará os dados de todos os instrutores cadastrados em formato JSON. Para que seja feita essa requisição, deve ser passado o valor do token JWT no Header "authorization" da aplicação no seguinte formato:
-
-```
-Bearer <valor-do-token>
-```
+A requisição para essa rota retornará os dados de todos os instrutores cadastrados em formato JSON. Para que seja feita essa requisição, deve ser passado o valor do Bearer Token em "Authorization".
 
 ### Rota PUT/instructor/:id
 
-A requisição para essa rota fará a atualização dos dados do instrutor logado. Para que essa requisição seja feita, é necessário, primeiramente, passar o valor do token JWT do instrutor logado no Header "authorization" da aplicação no seguinte formato:
-
-```
-Bearer <valor-do-token>
-```
+A requisição para essa rota fará a atualização dos dados do instrutor logado. Para que seja feita essa requisição, deve ser informado o id do instrutor a ser atualizado e o valor do Bearer Token em "Authorization".
 
 Após isso, devem ser fornecidos os dados a serem atualizados no corpo da requisição em formato JSON, sendo os campos possíveis de serem atualizados os seguintes:
 
@@ -179,21 +159,17 @@ Após isso, será retornado, em formato JSON, os dados do instrutor já atualiza
 
 ### Rota DELETE/instructor/:id
 
-A requisição para essa rota deletará todos os dados do instrutor logado. Para que essa requisição seja feita, é necessário passar o valor do token JWT do instrutor logado no Header "authorization" da aplicação no seguinte formato:
-
-```
-Bearer <valor-do-token>
-```
+A requisição para essa rota deletará todos os dados do instrutor logado. Para que seja feita essa requisição, deve ser informado o id do instrutor a ser deletado e o valor do Bearer Token em "Authorization".
 
 ## Scheduling Routes
 
+### Rota GET/schedules
+
+A requisição para essa rota retornará os dados de todos os agendamentos criados em formato JSON. Para que seja feita essa requisição, deve ser passado o valor do Bearer Token em "Authorization".
+
 ### Rota POST/schedule
 
-A requisição para essa rota criará os dados de um agendamento. Para que essa requisição seja feita, é necessário, primeiramente, passar o valor do token JWT do aluno logado no Header "authorization" da aplicação no seguinte formato:
-
-```
-Bearer <valor-do-token>
-```
+A requisição para essa rota criará os dados de um agendamento. Para que essa requisição seja feita, é necessário, primeiramente, passar o valor do Bearer Token do aluno logado em "Authorization".
 
 Após isso, devem ser fornecidos os dados a serem atualizados no corpo da requisição em formato JSON, o body enviado deve conter os seguintes campos:
 
@@ -212,11 +188,7 @@ Após o sucesso da requisição, será retornado, em formato JSON os dados do ag
 
 ### Rota PUT/schedule/:id
 
-A requisição para essa rota fará a atualização dos dados de um agendamento. Para que essa requisição seja feita, é necessário, primeiramente, passar o valor do token JWT do aluno logado no Header "authorization" da aplicação no seguinte formato:
-
-```
-Bearer <valor-do-token>
-```
+A requisição para essa rota fará a atualização dos dados de um agendamento. Para que essa requisição seja feita, é necessário, passar o valor do Bearer Token do aluno logado em "Authorization".
 
 Após isso, devem ser fornecidos os dados a serem atualizados no corpo da requisição em formato JSON, sendo os campos possíveis de serem atualizados os seguintes:
 
@@ -233,33 +205,35 @@ Após isso, será retornado, em formato JSON, os dados do agendamento já atuali
 
 ### Rota DELETE/schedule/:id
 
-A requisição para essa rota deletará o agendamento que tiver seu ID informado ao fazer a requisição. Para que essa requisição seja feita, é necessário passar o valor do token JWT do aluno logado no Header "authorization" da aplicação no seguinte formato:
-
-```
-Bearer <valor-do-token>
-```
+A requisição para essa rota deletará o agendamento que tiver seu ID informado ao fazer a requisição. Para que essa requisição seja feita, é necessário passar o valor do Bearer Token do aluno logado em "Authorization".
 
 ## Upload Routes
 
 ### Rota POST/schedule/:id/upload
 
-A requisição para essa rota fará o upload do arquivo e o anexará a um agendamento. Para que essa requisição seja feita, é necessário, primeiramente, passar o valor do token JWT no Header "authorization" da aplicação no seguinte formato:
+A requisição para essa rota fará o upload do arquivo e o anexará a um agendamento que tiver seu ID informado ao fazer a requisição. Para que essa requisição seja feita, é necessário, primeiramente, passar o valor do Bearer Token do usuário logado em "Authorization".
 
-```
-Bearer <valor-do-token>
-```
-
-Após isso, na seção body deverá ser selecionada a opção form-data, e informada uma key chamada "file" tendo como tipo File e value deverá ser o arquivo a ser anexado ao agendamento. O documento deverá ser do tipo txt, docx ou pdf com tamanho máximo de 3mb.
+Após isso, na seção body deverá ser selecionada a opção form-data, e informada uma key chamada "file" tendo como tipo File, o value deverá ser o arquivo a ser anexado ao agendamento. O documento deverá ser do tipo txt, docx ou pdf com tamanho máximo de 3mb.
 
 Após o sucesso da requisição, será retornado em formato JSON o link do arquivo no cloudinary.
 
 ### Rota GET/schedule/:id/uploads
 
-A requisição para essa rota retornará os links de todos os uploads do agendamento em formato JSON. Para que seja feita essa requisição, deve ser passado o valor do token JWT no Header "authorization" da aplicação no seguinte formato:
+A requisição para essa rota retornará os links de todos os uploads do agendamento que tiver seu ID informado ao fazer a requisição em formato JSON. Para que seja feita essa requisição, deve ser passado o valor do Bearer Token do usuário logado em "Authorization".
+
+### Rota POST/schedule/:id/uploads/remove
+
+A requisição para essa rota deletará o upload do agendamento que tiver seu ID informado ao fazer a requisição. Para que essa requisição seja feita, é necessário passar o valor do Bearer Token do usuário logado em "Authorization".
+
+O arquivo a ser deletado será o que tiver seu index informado no corpo da requisição em formato JSON, que deverá ser da seguinte forma:
 
 ```
-Bearer <valor-do-token>
+{
+    "index":number
+}
 ```
+
+Para saber o index de um upload, deve-se primeiro consultar a rota "Get Schedule Uploads".
 
 ## Rota DOCS
 

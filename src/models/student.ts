@@ -10,7 +10,7 @@ interface IStudent extends Document {
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
-// Student mongoDB Schema
+// Student mongoDB Schmea
 const StudentSchema: Schema = new Schema<IStudent>({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },

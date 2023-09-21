@@ -1,4 +1,8 @@
-import { uploadFile, getScheduleUploads } from '../controllers/upload';
+import {
+  uploadFile,
+  getScheduleUploads,
+  removeUpload,
+} from '../controllers/upload';
 import { UploadedFile } from 'express-fileupload';
 import { SchedulingModel } from '../models/scheduling';
 import { Request, Response, NextFunction } from 'express';
@@ -166,35 +170,25 @@ describe('Upload tests', () => {
 
   describe('Get schedule uploads', () => {
     it('Should return status 200 and the uploads if the upload was ok', async () => {
-      const file = {
-        name: 'testFile.txt',
-        size: 3000000,
-      } as UploadedFile;
+      const mockScheduling = {
+        files: [
+          {
+            url: 'testUrl',
+            name: 'testName',
+          },
+        ],
+      };
       req = {
-        files: {
-          file,
-        },
         params: {
           id: '65039e7324362123ace8430',
         },
       };
-
-      const mockScheduling = {
-        files: [
-          {
-            url: 'https://link-to-cloudinary-file.com',
-            name: 'testFile.txt',
-            _id: '65039e7324362123ace8430',
-          },
-        ],
-      };
-
       (mongoose.isValidObjectId as jest.Mock).mockReturnValue(true);
       (SchedulingModel.findById as jest.Mock).mockResolvedValue(mockScheduling);
 
       await getScheduleUploads(req as Request, res as Response, next);
       expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith({ uploads: mockScheduling.files });
+      expect(res.json).toHaveBeenCalledWith({ files: mockScheduling.files });
     });
 
     it("Should return status 404 and msg 'Scheduling with id: ${idscheduling} not found.' if scheduling is not found", async () => {
@@ -229,6 +223,161 @@ describe('Upload tests', () => {
       expect(res.status).toHaveBeenCalledWith(404);
       expect(res.json).toHaveBeenCalledWith({
         msg: `Scheduling with id: ${req.params!.id} has no uploaded files.`,
+      });
+    });
+  });
+
+  describe('Remove upload', () => {
+    it("Should return status 404 and msg 'Scheduling with id: ${idScheduling} not found.' if scheduling is not found", async () => {
+      req = {
+        params: {
+          id: '65039e7324362123ace8430',
+        },
+      };
+      (mongoose.isValidObjectId as jest.Mock).mockReturnValue(true);
+      (SchedulingModel.findById as jest.Mock).mockResolvedValue(null);
+
+      await removeUpload(req as Request, res as Response, next);
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.json).toHaveBeenCalledWith({
+        msg: `Scheduling with id: ${req.params!.id} not found.`,
+      });
+    });
+
+    it("Should return status 400 and msg 'Please inform a valid index.' if index is not informed or is undefined", async () => {
+      req = {
+        params: {
+          id: '65039e7324362123ace8430',
+        },
+        body: {
+          index: undefined,
+        },
+      };
+      (mongoose.isValidObjectId as jest.Mock).mockReturnValue(true);
+      (SchedulingModel.findById as jest.Mock).mockResolvedValue(true);
+
+      await removeUpload(req as Request, res as Response, next);
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        msg: 'Please inform a valid index.',
+      });
+    });
+
+    it("Should return status 404 and msg 'Invalid index, please inform a valid index.' if index is not a number", async () => {
+      req = {
+        params: {
+          id: '65039e7324362123ace8430',
+        },
+        body: {
+          index: '-1',
+        },
+      };
+      (mongoose.isValidObjectId as jest.Mock).mockReturnValue(true);
+      (SchedulingModel.findById as jest.Mock).mockResolvedValue(true);
+
+      await removeUpload(req as Request, res as Response, next);
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.json).toHaveBeenCalledWith({
+        msg: 'Invalid index, please inform a valid index.',
+      });
+    });
+
+    it("Should return status 404 and msg 'Please inform a valid index.' if index is less than 0", async () => {
+      req = {
+        params: {
+          id: '65039e7324362123ace8430',
+        },
+        body: {
+          index: '2',
+        },
+      };
+      const mockScheduling = {
+        files: ['file1', 'file2'],
+      };
+      (mongoose.isValidObjectId as jest.Mock).mockReturnValue(true);
+      (SchedulingModel.findById as jest.Mock).mockResolvedValue(mockScheduling);
+
+      await removeUpload(req as Request, res as Response, next);
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.json).toHaveBeenCalledWith({
+        msg: 'Please inform a valid index.',
+      });
+    });
+
+    it("Should return status 400 and msg 'Invalid file URL.' if file URL is invalid", async () => {
+      req = {
+        params: {
+          id: '65039e7324362123ace8430',
+        },
+        body: {
+          index: '0',
+        },
+      };
+      const mockScheduling = {
+        files: ['file1', 'file2'],
+      };
+
+      (mongoose.isValidObjectId as jest.Mock).mockReturnValue(true);
+      (SchedulingModel.findById as jest.Mock).mockResolvedValue(mockScheduling);
+
+      await removeUpload(req as Request, res as Response, next);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        msg: 'Invalid file URL.',
+      });
+    });
+
+    it("Should return status 400 and msg ''Failed to remove file from Cloudinary, please try again.' if something went wrong while removing the file from Cloudinary", async () => {
+      req = {
+        params: {
+          id: '65039e7324362123ace8430',
+        },
+        body: {
+          index: '0',
+        },
+      };
+
+      const mockScheduling = {
+        files: ['https://some.valid.url/file'],
+      };
+
+      (SchedulingModel.findById as jest.Mock).mockResolvedValue(mockScheduling);
+      (cloudinary.v2.uploader.destroy as jest.Mock).mockResolvedValue(false);
+
+      await removeUpload(req as Request, res as Response, next);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        msg: 'Failed to remove file from Cloudinary, please try again.',
+      });
+    });
+
+    it("Should return status 200 and msg 'File removed successfully.' if the file is removed successfully", async () => {
+      req = {
+        params: {
+          id: '65039e7324362123ace8430',
+        },
+        body: {
+          index: '1',
+        },
+      };
+
+      const mockScheduling = {
+        files: ['https://some.valid.url/file', 'https://some.valid.url/file'],
+        save: jest.fn(),
+      };
+
+      (SchedulingModel.findById as jest.Mock).mockResolvedValue(mockScheduling);
+      (cloudinary.v2.uploader.destroy as jest.Mock).mockResolvedValue({
+        result: 'ok',
+      });
+
+      await removeUpload(req as Request, res as Response, next);
+      expect(mockScheduling.save).toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        msg: 'File removed successfully!',
       });
     });
   });
