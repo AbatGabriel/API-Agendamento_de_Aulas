@@ -250,10 +250,12 @@ A documentação do Swagger dessa aplicação pode ser acessada pela rota "/api-
 - [express-async-errors](https://www.npmjs.com/package/express-async-errors) - try/catch wrapper.
 - [express-fileupload](express-fileupload) - Biblioteca para fazer o upload de arquivos.
 - [http-status-codes](https://www.npmjs.com/package/http-status-codes) - Biblioteca para auxiliar a escrita de status codes na aplicação.
+- [jest](https://www.npmjs.com/package/jest) - Framework de teste.
 - [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) - Manager para tokens JWT.
 - [MongoDB](https://www.mongodb.com/pt-br) - Banco de dados não-relacional.
 - [Mongoose](https://mongoosejs.com/) - Modelador de objetos de MongoDB para NodeJS
 - [Nodemon](https://www.npmjs.com/package/nodemon) - Atualizador de aplicações Node.js.
+- [supertest](https://www.npmjs.com/package/supertest) - Biblioteca para testar servidores HTTP.
 - [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express) - Biblioteca para documentação de aplicações backend.
 - [TypeScript](https://www.typescriptlang.org/) - Superset, para tipagem de JavaScript.
 - [yamljs](https://www.npmjs.com/package/yamljs) - Parser e encoder de arquivos YAML.
