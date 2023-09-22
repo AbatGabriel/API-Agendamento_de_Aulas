@@ -406,10 +406,10 @@ paths:
       description: ""
       operationId: get-file
       responses:
-        "500":
-          description: Returns Schedule has no uploaded files
         "200":
           description: Returns Upload Object
+        "500":
+          description: Returns Schedule has no uploaded files
   /schedule/{id}/upload:
     post:
       summary: Upload a new file
@@ -424,14 +424,38 @@ paths:
           schema:
             type: string
       responses:
-        "404":
-          description: Returns Not Found
-        "400":
-          description: Returns No Uploaded file, Maximum file size exceed or Invalid type File
-        "500":
-          description: Returns Something went wrong, please try again
         "200":
           description: Returns Object with src file
+        "400":
+          description: >-
+            Returns No Uploaded file, Maximum file size exceed or Invalid type
+            File
+        "404":
+          description: Returns Not Found
+        "500":
+          description: Returns Something went wrong, please try again
+      tags:
+        - Upload File Routes
+  /schedules/{id}/uploads/remove:
+    post:
+      summary: ""
+      description: ""
+      operationId: Delete-uploadaded-file
+      parameters:
+        - name: id
+          in: path
+          description: ID do agendamento como parâmetro de rota.
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        200:
+          description: Returns File Removed Successfully
+        404:
+          description: Returns File Not Found, Invalid Index, Please inform a valid index, Schedule with id {id} not found.
+        400:
+          description: Returns Invalid index, Invalid URL, Failed to remove file, Please infor a valid scheduling id
       tags:
         - Upload File Routes
 components:
