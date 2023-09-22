@@ -8,7 +8,7 @@ import {
 import { authMiddleware, verifyRoles, verifyUser } from '../middleware/auth';
 const router = Router();
 
-router.route('/schedules').get(getAllSchedules);
+router.route('/schedules').get(authMiddleware, verifyUser, getAllSchedules);
 router
   .post('/schedule', authMiddleware, verifyRoles('Student'), createSchedule)
   .put(

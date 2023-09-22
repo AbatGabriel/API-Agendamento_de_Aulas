@@ -1,4 +1,5 @@
 import {
+  getAllSchedules,
   createSchedule,
   updateSchedule,
   deleteSchedule,
@@ -13,6 +14,7 @@ jest.mock('mongoose');
 
 jest.mock('../models/scheduling', () => ({
   SchedulingModel: {
+    find: jest.fn(),
     findById: jest.fn(),
     findByIdAndUpdate: jest.fn(),
     create: jest.fn(),
@@ -68,6 +70,44 @@ describe('Scheduling tests', () => {
     expertise: ['Math', 'Science'],
     availability: ['9:00', '11:00'],
   };
+
+  // getAllSchedules test
+  describe('getAllSchedules test', () => {
+    it('Should successfully return all schedules', async () => {
+      const mockSchedules = [
+        {
+          instructor: '65039e7324362123ace8430',
+          student: '650316118344060c8212ace5',
+          time: 'Mon1',
+          subject: 'Math1',
+        },
+        {
+          instructor: '65039e7324362123ace8431',
+          student: '650316118344060c8212ace6',
+          time: 'Tue2',
+          subject: 'Eng2',
+        },
+      ];
+
+      (SchedulingModel.find as jest.Mock).mockResolvedValue(mockSchedules);
+
+      await getAllSchedules(req as Request, res as Response, next);
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({ schedules: mockSchedules });
+    });
+
+    it('Should return "There is no schedules registered" error if there is no schedules', async () => {
+      (SchedulingModel.find as jest.Mock).mockResolvedValue([]);
+
+      await getAllSchedules(req as Request, res as Response, next);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        msg: 'There is no schedules registered',
+      });
+    });
+  });
 
   // createScheduling test
   describe('createScheduling test', () => {

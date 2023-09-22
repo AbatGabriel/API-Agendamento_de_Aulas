@@ -13,6 +13,16 @@
 				{
 					"name": "listar todos os instrutores",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -22,19 +32,13 @@
 							}
 						],
 						"url": {
-							"raw": "localhost:3000/instructors?Authorization=Bearer ",
+							"raw": "localhost:3000/instructors",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"instructors"
-							],
-							"query": [
-								{
-									"key": "Authorization",
-									"value": "Bearer "
-								}
 							]
 						}
 					},
@@ -47,7 +51,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\":\"\",\r\n    \"email\":\"\",\r\n    \"password\":\"\",\r\n    \"especialidades\":[\"\", \"\",\"\"],\r\n    \"horariosDisponiveis\":[\"\",\"\"]\r\n}",
+							"raw": "{\r\n    \"name\": \"\",\r\n    \"email\":\"\",\r\n    \"password\":\"\",\r\n    \"expertise\":[\"\"],\r\n    \"availability\":[\"\"]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -70,11 +74,21 @@
 				{
 					"name": "atualizar instrutor",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\":\"\",\r\n    \"email\":\"\",\r\n    \"password\":\"\",\r\n    \"especialidades\":[\"\",\"\"],\r\n    \"horariosDisponiveis\":[\"\",\"\"]\r\n}",
+							"raw": "{\r\n    \"name\": \"\",\r\n    \"email\":\"\",\r\n    \"password\":\"\",\r\n    \"expertise\":[\"\"],\r\n    \"availability\":[\"\"]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -104,6 +118,16 @@
 				{
 					"name": "excluir instrutor",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -135,22 +159,26 @@
 				{
 					"name": "listar todos os alunos",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/students?Authorization=Bearer ",
+							"raw": "localhost:3000/students",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"students"
-							],
-							"query": [
-								{
-									"key": "Authorization",
-									"value": "Bearer "
-								}
 							]
 						}
 					},
@@ -163,7 +191,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\":\"\",\r\n    \"email\":\"\",\r\n    \"password\":\"\"\r\n}",
+							"raw": "{\r\n    \"name\":\"\",\r\n    \"email\":\"\",\r\n    \"password\":\"\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -186,11 +214,21 @@
 				{
 					"name": "atualizar estudante",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\":\"\",\r\n    \"email\":\"\",\r\n    \"password\":\"\"\r\n}",
+							"raw": "{\r\n    \"name\":\"\",\r\n    \"email\":\"\",\r\n    \"password\":\"\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -198,7 +236,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/student/:id?Authorization=Bearer ",
+							"raw": "localhost:3000/student/:id",
 							"host": [
 								"localhost"
 							],
@@ -206,12 +244,6 @@
 							"path": [
 								"student",
 								":id"
-							],
-							"query": [
-								{
-									"key": "Authorization",
-									"value": "Bearer "
-								}
 							],
 							"variable": [
 								{
@@ -226,10 +258,20 @@
 				{
 					"name": "excluir aluno",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/student/:id?Authorization=Bearer ",
+							"raw": "localhost:3000/student/:id",
 							"host": [
 								"localhost"
 							],
@@ -237,12 +279,6 @@
 							"path": [
 								"student",
 								":id"
-							],
-							"query": [
-								{
-									"key": "Authorization",
-									"value": "Bearer "
-								}
 							],
 							"variable": [
 								{
@@ -343,11 +379,21 @@
 				{
 					"name": "criar agendamento",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"instrutor\":\"\",\r\n    \"aluno\":\"\",\r\n    \"horario\":\"\",\r\n    \"materia\":\"\"\r\n}",
+							"raw": "{\r\n    \"instructor\":\"\",\r\n    \"student\":\"\",\r\n    \"time\":\"\",\r\n    \"subject\":\"\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -355,19 +401,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/schedule?Authorization=Bearer ",
+							"raw": "localhost:3000/schedule",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"schedule"
-							],
-							"query": [
-								{
-									"key": "Authorization",
-									"value": "Bearer "
-								}
 							]
 						}
 					},
@@ -376,11 +416,21 @@
 				{
 					"name": "atualizar agendamento",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"instrutor\":\"\",\r\n    \"aluno\":\"\",\r\n    \"horario\":\"\",\r\n    \"materia\":\"\"\r\n}",
+							"raw": "{\r\n    \"instructor\":\"\",\r\n    \"student\":\"\",\r\n    \"time\":\"\",\r\n    \"subject\":\"\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -388,7 +438,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/schedule/:id?Authorization=Bearer ",
+							"raw": "localhost:3000/schedule/:id",
 							"host": [
 								"localhost"
 							],
@@ -396,12 +446,6 @@
 							"path": [
 								"schedule",
 								":id"
-							],
-							"query": [
-								{
-									"key": "Authorization",
-									"value": "Bearer "
-								}
 							],
 							"variable": [
 								{
@@ -416,10 +460,20 @@
 				{
 					"name": "excluir agendamento",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/schedule/:id?Authorization=Bearer ",
+							"raw": "localhost:3000/schedule/:id",
 							"host": [
 								"localhost"
 							],
@@ -428,17 +482,29 @@
 								"schedule",
 								":id"
 							],
-							"query": [
-								{
-									"key": "Authorization",
-									"value": "Bearer "
-								}
-							],
 							"variable": [
 								{
 									"key": "id",
 									"value": ""
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar todos os agendamentos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/schedules",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"schedules"
 							]
 						}
 					},
@@ -453,6 +519,16 @@
 				{
 					"name": "fazer upload de arquivo em um agendamento",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -466,7 +542,7 @@
 							]
 						},
 						"url": {
-							"raw": "localhost:3000/schedule/:id/upload?Authorization=Bearer ",
+							"raw": "localhost:3000/schedule/:id/upload",
 							"host": [
 								"localhost"
 							],
@@ -479,7 +555,8 @@
 							"query": [
 								{
 									"key": "Authorization",
-									"value": "Bearer "
+									"value": "Bearer ",
+									"disabled": true
 								}
 							],
 							"variable": [
@@ -495,10 +572,20 @@
 				{
 					"name": "listar todos os uploads de um agendamento",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/schedule/:id/uploads?Authorization=Bearer ",
+							"raw": "localhost:3000/schedule/:id/uploads",
 							"host": [
 								"localhost"
 							],
@@ -511,7 +598,61 @@
 							"query": [
 								{
 									"key": "Authorization",
-									"value": "Bearer "
+									"value": "Bearer ",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remover um upload de um agendamento",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"index\":\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/schedule/:id/uploads/remove",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"schedule",
+								":id",
+								"uploads",
+								"remove"
+							],
+							"query": [
+								{
+									"key": "Authorization",
+									"value": "Bearer",
+									"disabled": true
 								}
 							],
 							"variable": [
