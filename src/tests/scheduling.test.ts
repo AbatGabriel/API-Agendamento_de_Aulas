@@ -8,7 +8,6 @@ import { SchedulingModel } from '../models/scheduling';
 import { InstructorModel } from '../models/instructor';
 import { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
-import { verifyRoles } from '../middleware/auth';
 
 jest.mock('mongoose');
 

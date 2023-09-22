@@ -41,7 +41,7 @@ function verifyRoles(...roles: string[]) {
   };
 }
 
-// Verifies if user can has permission for some routes that it's id needs to be the same of params
+// Verifies if user has permission for some routes that it's id needs to be the same of params
 async function verifyUser(
   req: Request | any,
   res: Response,

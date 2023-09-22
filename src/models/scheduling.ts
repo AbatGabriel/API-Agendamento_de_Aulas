@@ -1,7 +1,6 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document } from 'mongoose';
 
 // Scheduling interface
-// Os campos do instructor e student são, respectivamente, o name e o id de cada um
 interface IScheduling extends Document {
   instructor: string;
   student: string;
@@ -20,6 +19,6 @@ const SchedulingSchema: Schema = new Schema<IScheduling>({
 });
 
 export const SchedulingModel = mongoose.model<IScheduling>(
-  "Scheduling",
+  'Scheduling',
   SchedulingSchema
 );

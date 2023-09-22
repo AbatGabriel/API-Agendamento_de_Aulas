@@ -21,7 +21,6 @@ jest.mock('../models/student', () => ({
 
 describe('Students tests', () => {
   afterAll(() => {
-    // Limpa todos os mocks
     jest.clearAllMocks();
   });
 
@@ -45,7 +44,7 @@ describe('Students tests', () => {
 
   const next = jest.fn();
 
-  // Testes para o método getSingleStudent
+  // getAllStudents tests
   describe('getAllStudents', () => {
     it('should return all the Students registred and "status OK"', async () => {
       (StudentModel.find as jest.Mock).mockResolvedValue([
@@ -66,7 +65,7 @@ describe('Students tests', () => {
     });
 
     it('should return "There is none student registered" error if there is no student registered', async () => {
-      // Simula que não há nenhum student registrado
+      // Simulates that there is no student registered
       (StudentModel.find as jest.Mock).mockResolvedValue([]);
 
       await getAllStudents(
@@ -90,7 +89,7 @@ describe('Students tests', () => {
         },
       };
 
-      // Simula que há um student com o id fornecido
+      // Simulates that there is a student with the given id
       (StudentModel.findOne as jest.Mock).mockResolvedValue(mockStudent);
 
       await getSingleStudent(
@@ -130,7 +129,7 @@ describe('Students tests', () => {
         },
       };
 
-      // Simula que não há nenhum Student com o id fornecido
+      // Simulates that there is no student with the given id
       (StudentModel.findOne as jest.Mock).mockResolvedValue(null);
 
       await getSingleStudent(
@@ -146,7 +145,7 @@ describe('Students tests', () => {
     });
   });
 
-  // Testes para o método createStudent
+  // createStudent tests
   describe('createStudent', () => {
     it('should return the Student created and "status OK"', async () => {
       const req = {
@@ -157,7 +156,7 @@ describe('Students tests', () => {
         },
       };
 
-      // Simula que o instructor foi criado
+      // Simulates that the Student was created
       (StudentModel.create as jest.Mock).mockResolvedValue({});
 
       await createStudent(
@@ -197,7 +196,7 @@ describe('Students tests', () => {
         },
       };
 
-      // Simula que um Student com o email fornecido já existe
+      // Simulates that there is a Student with the given email
       (StudentModel.findOne as jest.Mock).mockResolvedValue({
         email: 'viniciuspinha2@hotmail.com',
       });
@@ -213,7 +212,7 @@ describe('Students tests', () => {
     });
   });
 
-  // Testes para o método updateStudent
+  // updateStudent tests
   describe('updateStudent', () => {
     it('should return student updated and "status OK"', async () => {
       const req = {
@@ -269,7 +268,7 @@ describe('Students tests', () => {
         },
       };
 
-      // Simula que não há nenhum Student com o id fornecido
+      // Simulates that there is no Student with the given id
       (StudentModel.findOne as jest.Mock).mockResolvedValue(null);
 
       await updateStudent(
@@ -285,8 +284,7 @@ describe('Students tests', () => {
     });
   });
 
-  // Testes para o método deleteStudent
-
+  // deleteStudent tests
   describe('deleteStudent', () => {
     it('should return "There is no Student with id: {id}" error if there is no Student with the given id', async () => {
       const req = {
@@ -310,7 +308,7 @@ describe('Students tests', () => {
       });
     });
 
-    // Teste para o caso de sucesso
+    // Success case test
     it('should return the deleted Student', async () => {
       const req = {
         params: {
@@ -318,7 +316,7 @@ describe('Students tests', () => {
         },
       };
 
-      // Simula que há um Student com o id fornecido
+      // Simulates that the Student was deleted
       (StudentModel.findByIdAndRemove as jest.Mock).mockResolvedValue(
         mockStudent
       );

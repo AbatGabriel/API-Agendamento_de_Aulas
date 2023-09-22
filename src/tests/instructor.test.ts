@@ -24,7 +24,6 @@ describe('Instructors tests', () => {
     jest.clearAllMocks();
   });
   afterAll(() => {
-    // Limpa todos os mocks
     jest.clearAllMocks();
   });
 
@@ -33,16 +32,16 @@ describe('Instructors tests', () => {
     name: 'Vinicius',
     email: 'vinicius@hotmail.com',
     password: 'secret',
-    expertise: ['Matéria1', 'Matéria2'],
-    availability: ['Seg2', 'Seg3'],
+    expertise: ['Math1', 'Portuguese2'],
+    availability: ['Mon2', 'Mon3'],
   };
   const mockInstructor2 = {
     _id: '6601ebfc87d46e3a6861844e',
     name: 'Gabriel',
     email: 'gabriel@hotmail.com',
     password: 'secret',
-    expertise: ['Matéria1', 'Matéria2'],
-    availability: ['Seg2', 'Seg3'],
+    expertise: ['Math1', 'Portuguese2'],
+    availability: ['Mon2', 'Mon3'],
   };
 
   const res = {
@@ -73,7 +72,7 @@ describe('Instructors tests', () => {
     });
 
     it('should return "There is none instructors registered" error if there is no instructors registered', async () => {
-      // Simula que não há nenhum instructor registrado
+      // Simulate that there is no instructors registered
       (InstructorModel.find as jest.Mock).mockResolvedValue([]);
 
       await getAllInstructors(
@@ -89,7 +88,7 @@ describe('Instructors tests', () => {
     });
   });
 
-  // Testes para o método getSingleInstructor
+  // getSingleInstructor Tests
   describe('getSingleInstructor', () => {
     it('should return a Instructor registred and "status OK"', async () => {
       const req = {
@@ -98,7 +97,7 @@ describe('Instructors tests', () => {
         },
       };
 
-      // Simula que há um instructor com o id fornecido
+      // Simulates that there is a instructor with the given id
       (InstructorModel.findOne as jest.Mock).mockResolvedValue(mockInstructor);
 
       await getSingleInstructor(
@@ -138,7 +137,7 @@ describe('Instructors tests', () => {
         },
       };
 
-      // Simula que não há nenhum instructor com o id fornecido
+      // Simulates that there is no instructor with the given id
       (InstructorModel.findOne as jest.Mock).mockResolvedValue(null);
 
       await getSingleInstructor(
@@ -154,7 +153,7 @@ describe('Instructors tests', () => {
     });
   });
 
-  // Testes para o método createInstructor
+  // createInstructor Tests
   describe('createInstructor', () => {
     it('should return Instructor created and "status OK"', async () => {
       const req = {
@@ -162,12 +161,11 @@ describe('Instructors tests', () => {
           name: 'Vinicius',
           email: 'vinicius@hotmail.com',
           password: 'secret',
-          expertise: ['Matéria1', 'Matéria2'],
-          availability: ['Seg2', 'Seg3'],
+          expertise: ['Math1', 'Portuguese2'],
+          availability: ['Mon2', 'Mon3'],
         },
       };
 
-      // Simula que o instructor foi criado
       (InstructorModel.create as jest.Mock).mockResolvedValue({});
 
       await createInstructor(
@@ -211,7 +209,7 @@ describe('Instructors tests', () => {
         },
       };
 
-      // Simula que um instructor com o email fornecido já existe
+      // Simulates that there is a instructor with the given email
       (InstructorModel.findOne as jest.Mock).mockResolvedValue({
         email: 'viniciuspinha2@hotmail.com',
       });
@@ -227,7 +225,7 @@ describe('Instructors tests', () => {
     });
   });
 
-  // Testes para o método updateInstructor
+  // updateInstructor Tests
   describe('updateInstructor', () => {
     it('should return Instructor updated and "status OK"', async () => {
       const req = {
@@ -238,7 +236,7 @@ describe('Instructors tests', () => {
           name: 'Viniciuss',
           email: 'viniciuss@hotmail.com',
           password: 'secrett',
-          expertise: ['Matéria2'],
+          expertise: ['Portuguese2'],
           availability: ['Sex9'],
         },
       };
@@ -248,7 +246,7 @@ describe('Instructors tests', () => {
         name: 'Viniciuss',
         email: 'viniciuss@hotmail.com',
         password: 'secrett',
-        expertise: ['Matéria2'],
+        expertise: ['Portuguese2'],
         availability: ['Sex9'],
       });
 
@@ -287,7 +285,7 @@ describe('Instructors tests', () => {
         },
       };
 
-      // Simula que não há nenhum instructor com o id fornecido
+      // Simulates that there is no instructor with the given id
       (InstructorModel.findOne as jest.Mock).mockResolvedValue(null);
 
       await updateInstructor(
@@ -303,8 +301,7 @@ describe('Instructors tests', () => {
     });
   });
 
-  // Testes para o método deleteInstructor
-
+  // deleteInstructor Tests
   describe('deleteInstructor', () => {
     it('should return "There is no instructor with id: {id}" error if there is no instructor with the given id', async () => {
       const req = {
@@ -313,7 +310,7 @@ describe('Instructors tests', () => {
         },
       };
 
-      // Simula que não há nenhum instructor com o id fornecido
+      // Simulates that there is no instructor with the given id
       (InstructorModel.findOne as jest.Mock).mockResolvedValue(null);
 
       await deleteInstructor(
@@ -328,7 +325,7 @@ describe('Instructors tests', () => {
       });
     });
 
-    // Teste para o caso de sucesso
+    // Success case test
     it('should return the deleted instructor', async () => {
       const req = {
         params: {
@@ -336,7 +333,7 @@ describe('Instructors tests', () => {
         },
       };
 
-      // Simula que há um instructor com o id fornecido
+      // Simulates that there is a instructor with the given id
       (InstructorModel.findByIdAndRemove as jest.Mock).mockResolvedValue(
         mockInstructor
       );
